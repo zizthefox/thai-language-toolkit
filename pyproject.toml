@@ -1,7 +1,12 @@
 [project]
 name = "thai-language-toolkit"
 version = "0.1.0"
-description = "Add your description here"
+description = "A lightweight toolkit for Thai learners: sentence breakdown, romanization, pronunciation (TTS), flashcards, and a simple tone game"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "pythainlp>=5.0.0",
+    "streamlit>=1.28.0",
+    "pandas>=2.0.0",
+    "gtts>=2.3.0",
+]
