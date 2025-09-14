@@ -4,6 +4,7 @@ from typing import List, Dict, Optional, Tuple
 import pythainlp
 from pythainlp import word_tokenize, pos_tag
 from pythainlp.corpus import thai_stopwords
+from pythainlp.translate import Translate
 
 
 class ThaiBreakdown:
@@ -11,6 +12,16 @@ class ThaiBreakdown:
 
     def __init__(self):
         self.stopwords = thai_stopwords()
+        self.translator = None
+        self._init_translator()
+
+    def _init_translator(self):
+        """Initialize the translator with fallback."""
+        try:
+            self.translator = Translate('th', 'en')
+        except Exception:
+            # Fallback if translation model fails to load
+            self.translator = None
 
     def segment(self, text: str, engine: str = "newmm") -> List[str]:
         """
@@ -39,8 +50,37 @@ class ThaiBreakdown:
         """
         return pos_tag(words, engine=engine)
 
+    def translate_word(self, word: str) -> Optional[str]:
+        """
+        Translate a single Thai word to English.
+
+        Args:
+            word: Thai word to translate
+
+        Returns:
+            English translation or None if unavailable
+        """
+        if self.translator:
+            try:
+                return self.translator.translate(word)
+            except Exception:
+                pass
+        return None
+
+    def translate_words(self, words: List[str]) -> List[Optional[str]]:
+        """
+        Translate a list of Thai words to English.
+
+        Args:
+            words: List of Thai words
+
+        Returns:
+            List of English translations (None for untranslatable words)
+        """
+        return [self.translate_word(word) for word in words]
+
     def breakdown(self, text: str, include_pos: bool = True,
-                 filter_stopwords: bool = False) -> Dict:
+                 filter_stopwords: bool = False, include_translation: bool = True) -> Dict:
         """
         Complete breakdown of Thai text.
 
@@ -48,6 +88,7 @@ class ThaiBreakdown:
             text: Thai text to analyze
             include_pos: Whether to include POS tags
             filter_stopwords: Whether to filter out stopwords
+            include_translation: Whether to include English translations
 
         Returns:
             Dictionary with breakdown results
@@ -73,6 +114,17 @@ class ThaiBreakdown:
             pos_tags = self.pos_tag_words(words)
             result["pos_tags"] = pos_tags
 
+        # Add translations if requested
+        if include_translation:
+            translations = self.translate_words(words)
+            result["translations"] = translations
+            # Also translate the full sentence
+            if self.translator:
+                try:
+                    result["full_translation"] = self.translator.translate(text)
+                except Exception:
+                    result["full_translation"] = None
+
         return result
 
     def get_word_info(self, word: str) -> Dict:
@@ -89,11 +141,15 @@ class ThaiBreakdown:
         pos_tags = pos_tag([word])
         pos = pos_tags[0][1] if pos_tags else "UNKNOWN"
 
+        # Get translation
+        translation = self.translate_word(word)
+
         return {
             "word": word,
             "length": len(word),
             "pos": pos,
             "is_stopword": word in self.stopwords,
+            "translation": translation,
         }
 
 

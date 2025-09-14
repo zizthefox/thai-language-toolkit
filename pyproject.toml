@@ -5,8 +5,11 @@ description = "A lightweight toolkit for Thai learners: sentence breakdown, roma
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "pythainlp>=5.0.0",
+    "pythainlp[translate]>=5.0.0",
     "streamlit>=1.28.0",
     "pandas>=2.0.0",
     "gtts>=2.3.0",
+    "numpy>=2.3.3",
+    "torch>=2.0.0",
+    "transformers>=4.30.0",
 ]

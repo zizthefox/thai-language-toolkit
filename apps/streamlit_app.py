@@ -45,6 +45,7 @@ with tab1:
     with col2:
         st.markdown("### Options")
         include_pos = st.checkbox("Include POS tags", value=True)
+        include_translation = st.checkbox("Include English meanings", value=True)
         filter_stopwords = st.checkbox("Filter stopwords", value=False)
         romanization_engine = st.selectbox(
             "Romanization system:",
@@ -52,13 +53,14 @@ with tab1:
             help="RTGS (royin) is the official Thai romanization system"
         )
 
-    if st.button("🔍 Analyze", type="primary", use_container_width=True):
+    if st.button("🔍 Analyze", type="primary"):
         if thai_text:
             # Perform breakdown
             breakdown_result = breakdown_engine.breakdown(
                 thai_text,
                 include_pos=include_pos,
-                filter_stopwords=filter_stopwords
+                filter_stopwords=filter_stopwords,
+                include_translation=include_translation
             )
 
             # Display results
@@ -89,35 +91,57 @@ with tab1:
             full_romanized = romanizer.romanize(thai_text, engine=romanization_engine)
             st.info(f"Full text: {full_romanized}")
 
-            # POS Tags
-            if include_pos and "pos_tags" in breakdown_result:
-                st.markdown("### 🏷️ Part-of-Speech Tags")
-                pos_data = []
-                for word, pos in breakdown_result["pos_tags"]:
+            # Full translation
+            if include_translation and "full_translation" in breakdown_result:
+                if breakdown_result["full_translation"]:
+                    st.success(f"📖 English: {breakdown_result['full_translation']}")
+
+            # Word analysis table
+            st.markdown("### 📚 Word Analysis")
+            word_data = []
+            for i, word in enumerate(words):
+                if word.strip():  # Skip empty words
                     romanized = romanizer.romanize(word, engine=romanization_engine)
-                    pos_data.append({
+                    row = {
                         "Thai": word,
                         "Romanized": romanized,
-                        "POS": pos
-                    })
-                st.dataframe(pos_data, use_container_width=True)
+                    }
+
+                    # Add translation if available
+                    if include_translation and "translations" in breakdown_result:
+                        translation = breakdown_result["translations"][i]
+                        row["English"] = translation if translation else "-"
+
+                    # Add POS if available
+                    if include_pos and "pos_tags" in breakdown_result:
+                        row["POS"] = breakdown_result["pos_tags"][i][1]
+
+                    word_data.append(row)
+
+            if word_data:
+                st.dataframe(word_data, width='stretch')
 
             # Detailed word breakdown
             with st.expander("📋 Detailed Word Breakdown"):
                 for i, word in enumerate(words):
                     if word.strip():  # Skip empty words
-                        col1, col2, col3, col4 = st.columns(4)
+                        word_info = breakdown_engine.get_word_info(word)
+                        col1, col2, col3, col4, col5 = st.columns([2, 2, 3, 2, 1])
                         with col1:
                             st.write(f"**{word}**")
                         with col2:
                             st.write(romanized_words[i])
                         with col3:
+                            if include_translation and word_info.get("translation"):
+                                st.write(f"📖 {word_info['translation']}")
+                            else:
+                                st.write("-")
+                        with col4:
                             if include_pos and "pos_tags" in breakdown_result:
                                 st.write(breakdown_result["pos_tags"][i][1])
-                        with col4:
-                            word_info = breakdown_engine.get_word_info(word)
+                        with col5:
                             if word_info["is_stopword"]:
-                                st.write("⚪ Stopword")
+                                st.write("⚪")
 
             # Compare romanization systems
             with st.expander("🔄 Compare Romanization Systems"):
