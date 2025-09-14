@@ -27,11 +27,17 @@ class ThaiBreakdown:
         except Exception:
             self.translator = None
 
+        # Try to import Google Translate, fallback if not available
         try:
-            # Google Translate for English to Thai (better quality)
+            from googletrans import Translator
             self.google_translator = Translator()
         except Exception:
+            # Fallback to MyMemory for English to Thai if Google fails
             self.google_translator = None
+            try:
+                self.en_to_th_translator = MyMemoryTranslator(source='en-GB', target='th-TH')
+            except Exception:
+                self.en_to_th_translator = None
 
     def segment(self, text: str, engine: str = "newmm") -> List[str]:
         """
@@ -213,7 +219,7 @@ class ThaiBreakdown:
 
     def translate_to_thai(self, text: str) -> Optional[str]:
         """
-        Translate English text to Thai using Google Translate.
+        Translate English text to Thai using Google Translate or fallback.
 
         Args:
             text: English text to translate
@@ -221,12 +227,28 @@ class ThaiBreakdown:
         Returns:
             Thai translation or None if unavailable
         """
-        if self.google_translator and text.strip():
+        if not text.strip():
+            return None
+
+        # Try Google Translate first
+        if self.google_translator:
             try:
                 result = self.google_translator.translate(text, src='en', dest='th')
                 return result.text
             except Exception:
                 pass
+
+        # Fallback to MyMemory if Google isn't available
+        if hasattr(self, 'en_to_th_translator') and self.en_to_th_translator:
+            try:
+                translation = self.en_to_th_translator.translate(text)
+                # Clean up HTML tags from MyMemory
+                translation = re.sub(r'<g[^>]*>([^<]*)</g>', lambda m: ENGLISH_THAI_NAMES.get(m.group(1).strip(), m.group(1).strip()), translation)
+                translation = re.sub(r'<g[^>]*>\s*</g>', '', translation)
+                return translation
+            except Exception:
+                pass
+
         return None
 
 
