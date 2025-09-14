@@ -2,3 +2,6 @@ streamlit>=1.28.0
 pythainlp>=4.0.0
 pandas>=2.0.0
 numpy>=1.24.0
+deep-translator>=1.11.4
+googletrans==4.0.0rc1
+edge-tts>=7.0.0
