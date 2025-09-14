@@ -49,8 +49,8 @@ with tab1:
         filter_stopwords = st.checkbox("Filter stopwords", value=False)
         romanization_engine = st.selectbox(
             "Romanization system:",
-            ["royin", "thai2rom", "icu"],
-            help="RTGS (royin) is the official Thai romanization system"
+            ["thai2rom", "royin", "icu"],
+            help="PyThaiNLP (thai2rom) is the official Thai this romanization system"
         )
 
     if st.button("🔍 Analyze", type="primary"):
@@ -120,28 +120,6 @@ with tab1:
 
             if word_data:
                 st.dataframe(word_data, width='stretch')
-
-            # Detailed word breakdown
-            with st.expander("📋 Detailed Word Breakdown"):
-                for i, word in enumerate(words):
-                    if word.strip():  # Skip empty words
-                        word_info = breakdown_engine.get_word_info(word)
-                        col1, col2, col3, col4, col5 = st.columns([2, 2, 3, 2, 1])
-                        with col1:
-                            st.write(f"**{word}**")
-                        with col2:
-                            st.write(romanized_words[i])
-                        with col3:
-                            if include_translation and word_info.get("translation"):
-                                st.write(f"📖 {word_info['translation']}")
-                            else:
-                                st.write("-")
-                        with col4:
-                            if include_pos and "pos_tags" in breakdown_result:
-                                st.write(breakdown_result["pos_tags"][i][1])
-                        with col5:
-                            if word_info["is_stopword"]:
-                                st.write("⚪")
 
             # Compare romanization systems
             with st.expander("🔄 Compare Romanization Systems"):
