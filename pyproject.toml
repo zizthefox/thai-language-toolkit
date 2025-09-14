@@ -14,4 +14,5 @@ dependencies = [
     "transformers>=4.30.0",
     "deep-translator>=1.11.4",
     "googletrans==4.0.0rc1",
+    "edge-tts>=7.2.3",
 ]
