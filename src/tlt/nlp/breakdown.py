@@ -4,7 +4,7 @@ from typing import List, Dict, Optional, Tuple
 import pythainlp
 from pythainlp import word_tokenize, pos_tag
 from pythainlp.corpus import thai_stopwords
-from pythainlp.translate import Translate
+from deep_translator import MyMemoryTranslator
 
 
 class ThaiBreakdown:
@@ -18,7 +18,8 @@ class ThaiBreakdown:
     def _init_translator(self):
         """Initialize the translator with fallback."""
         try:
-            self.translator = Translate('th', 'en')
+            # MyMemoryTranslator - free, no API key needed, community-based translations
+            self.translator = MyMemoryTranslator(source='thai', target='english')
         except Exception:
             # Fallback if translation model fails to load
             self.translator = None
@@ -60,9 +61,11 @@ class ThaiBreakdown:
         Returns:
             English translation or None if unavailable
         """
-        if self.translator:
+        if self.translator and word.strip():
             try:
-                return self.translator.translate(word)
+                # MicrosoftTranslator uses translate() method
+                translation = self.translator.translate(word)
+                return translation if translation else None
             except Exception:
                 pass
         return None
@@ -77,7 +80,13 @@ class ThaiBreakdown:
         Returns:
             List of English translations (None for untranslatable words)
         """
-        return [self.translate_word(word) for word in words]
+        translations = []
+        for word in words:
+            if word.strip():  # Only translate non-empty words
+                translations.append(self.translate_word(word))
+            else:
+                translations.append(None)
+        return translations
 
     def breakdown(self, text: str, include_pos: bool = True,
                  filter_stopwords: bool = False, include_translation: bool = True) -> Dict:
@@ -119,11 +128,13 @@ class ThaiBreakdown:
             translations = self.translate_words(words)
             result["translations"] = translations
             # Also translate the full sentence
-            if self.translator:
+            if self.translator and text.strip():
                 try:
                     result["full_translation"] = self.translator.translate(text)
                 except Exception:
                     result["full_translation"] = None
+            else:
+                result["full_translation"] = None
 
         return result
 
