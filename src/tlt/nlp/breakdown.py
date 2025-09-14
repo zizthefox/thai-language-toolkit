@@ -1,11 +1,13 @@
 """Thai text breakdown module for word segmentation and POS tagging."""
 
 from typing import List, Dict, Optional, Tuple
+import re
 import pythainlp
 from pythainlp import word_tokenize, pos_tag
 from pythainlp.corpus import thai_stopwords
 from deep_translator import MyMemoryTranslator
-from ..data import THAI_ENGLISH_DICT
+from googletrans import Translator
+from ..data import THAI_ENGLISH_DICT, ENGLISH_THAI_NAMES
 
 
 class ThaiBreakdown:
@@ -14,16 +16,22 @@ class ThaiBreakdown:
     def __init__(self):
         self.stopwords = thai_stopwords()
         self.translator = None
+        self.google_translator = None
         self._init_translator()
 
     def _init_translator(self):
         """Initialize the translator with fallback."""
         try:
-            # MyMemoryTranslator - free, no API key needed, community-based translations
-            self.translator = MyMemoryTranslator(source='thai', target='english')
+            # MyMemory for Thai to English (works well)
+            self.translator = MyMemoryTranslator(source='th-TH', target='en-GB')
         except Exception:
-            # Fallback if translation model fails to load
             self.translator = None
+
+        try:
+            # Google Translate for English to Thai (better quality)
+            self.google_translator = Translator()
+        except Exception:
+            self.google_translator = None
 
     def segment(self, text: str, engine: str = "newmm") -> List[str]:
         """
@@ -170,6 +178,56 @@ class ThaiBreakdown:
             "is_stopword": word in self.stopwords,
             "translation": translation,
         }
+
+    def detect_language(self, text: str) -> str:
+        """
+        Detect if text is English or Thai.
+
+        Args:
+            text: Text to analyze
+
+        Returns:
+            'thai', 'english', or 'mixed'
+        """
+        if not text.strip():
+            return 'unknown'
+
+        # Count Thai characters
+        thai_chars = sum(1 for c in text if '\u0E00' <= c <= '\u0E7F')
+        # Count English letters
+        english_chars = sum(1 for c in text if c.isalpha() and c.isascii())
+
+        total_alpha = thai_chars + english_chars
+
+        if total_alpha == 0:
+            return 'unknown'
+
+        thai_ratio = thai_chars / total_alpha
+
+        if thai_ratio > 0.8:
+            return 'thai'
+        elif thai_ratio < 0.2:
+            return 'english'
+        else:
+            return 'mixed'
+
+    def translate_to_thai(self, text: str) -> Optional[str]:
+        """
+        Translate English text to Thai using Google Translate.
+
+        Args:
+            text: English text to translate
+
+        Returns:
+            Thai translation or None if unavailable
+        """
+        if self.google_translator and text.strip():
+            try:
+                result = self.google_translator.translate(text, src='en', dest='th')
+                return result.text
+            except Exception:
+                pass
+        return None
 
 
 def breakdown_text(text: str, **kwargs) -> Dict:
