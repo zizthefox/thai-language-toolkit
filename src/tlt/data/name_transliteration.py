@@ -47,6 +47,7 @@ ENGLISH_THAI_NAMES = {
     'Samuel': 'ซามูเอล',
     'Alex': 'อเล็กซ์',
     'Alexander': 'อเล็กซานเดอร์',
+    'Amos': 'อามอส',
 
     # Female names
     'Mary': 'แมรี่',
