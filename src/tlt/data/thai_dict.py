@@ -76,4 +76,5 @@ THAI_ENGLISH_DICT = {
     "เพื่อน": "friend",
     "ครู": "teacher",
     "หมอ": "doctor",
+    "รู้จัก": "know",
 }

@@ -216,21 +216,47 @@ with tab2:
     # Example phrases
     st.markdown("---")
     st.markdown("### 🎯 Example Phrases")
-    examples = [
-        ("สวัสดีครับ", "Hello (male speaker)"),
-        ("สวัสดีค่ะ", "Hello (female speaker)"),
-        ("ขอบคุณมากครับ", "Thank you very much (male)"),
+
+    # Gender-neutral examples (shown for all voices)
+    neutral_examples = [
         ("ยินดีที่ได้รู้จัก", "Nice to meet you"),
         ("คุณเป็นอย่างไรบ้าง", "How are you?"),
-        ("ผมชื่อจอห์น", "My name is John (male)"),
-        ("ดิฉันชื่อแมรี่", "My name is Mary (female)"),
-        ("วันนี้อากาศดีมาก", "The weather is very nice today")
+        ("วันนี้อากาศดีมาก", "The weather is very nice today"),
+        ("อาหารอร่อยมาก", "The food is very delicious"),
+        ("ขอโทษ", "Excuse me / Sorry"),
+        ("ไม่เป็นไร", "No problem / It's okay")
     ]
+
+    # Gender-specific examples
+    male_examples = [
+        ("สวัสดีครับ", "Hello (male speaker)"),
+        ("ขอบคุณมากครับ", "Thank you very much (male)"),
+        ("ผมชื่อจอห์น", "My name is John (male)"),
+        ("ผมมาจากอเมริกาครับ", "I'm from America (male)"),
+        ("กรุณาช่วยผมหน่อยครับ", "Please help me (male)")
+    ]
+
+    female_examples = [
+        ("สวัสดีค่ะ", "Hello (female speaker)"),
+        ("ขอบคุณมากค่ะ", "Thank you very much (female)"),
+        ("ดิฉันชื่อแมรี่", "My name is Mary (female)"),
+        ("ดิฉันมาจากอเมริกาค่ะ", "I'm from America (female)"),
+        ("กรุณาช่วยดิฉันหน่อยค่ะ", "Please help me (female)")
+    ]
+
+    # Determine which examples to show based on selected voice
+    selected_voice_info = available_voices[selected_voice]
+    is_male_voice = selected_voice_info["gender"] == "Male"
+
+    if is_male_voice:
+        examples = neutral_examples + male_examples
+    else:
+        examples = neutral_examples + female_examples
 
     cols = st.columns(2)
     for i, (thai, english) in enumerate(examples):
         with cols[i % 2]:
-            if st.button(f"🔊 {thai}", key=f"example_{i}"):
+            if st.button(f"🔊 {thai}", key=f"example_{i}_{selected_voice}"):
                 with st.spinner("Generating speech..."):
                     audio_bytes = tts_engine.speak_text(thai, selected_voice)
                     if audio_bytes:
