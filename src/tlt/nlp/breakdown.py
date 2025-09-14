@@ -5,6 +5,7 @@ import pythainlp
 from pythainlp import word_tokenize, pos_tag
 from pythainlp.corpus import thai_stopwords
 from deep_translator import MyMemoryTranslator
+from ..data import THAI_ENGLISH_DICT
 
 
 class ThaiBreakdown:
@@ -61,9 +62,16 @@ class ThaiBreakdown:
         Returns:
             English translation or None if unavailable
         """
-        if self.translator and word.strip():
+        if not word.strip():
+            return None
+
+        # First check our dictionary for accurate common words
+        if word in THAI_ENGLISH_DICT:
+            return THAI_ENGLISH_DICT[word]
+
+        # Fall back to online translator for unknown words
+        if self.translator:
             try:
-                # MicrosoftTranslator uses translate() method
                 translation = self.translator.translate(word)
                 return translation if translation else None
             except Exception:
