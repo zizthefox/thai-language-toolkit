@@ -78,8 +78,8 @@ This toolkit is built on excellent open-source projects:
 - **[PyThaiNLP](https://github.com/PyThaiNLP/pythainlp)** - Thai NLP library for word segmentation, POS tagging, and romanization
 - **[Edge TTS](https://github.com/rany2/edge-tts)** - High-quality neural text-to-speech voices
 - **[Streamlit](https://streamlit.io/)** - Web app framework
-- **[deep-translator](https://github.com/nidhaloff/deep-translator)** - MyMemory translator for Thai → English translation
-- **[googletrans](https://github.com/ssut/py-googletrans)** - Google Translate for English → Thai translation
+- **[googletrans](https://github.com/ssut/py-googletrans)** - Google Translate for bidirectional Thai ↔ English translation
+- **[deep-translator](https://github.com/nidhaloff/deep-translator)** - MyMemory translator as fallback
 
 Special thanks to the PyThaiNLP team for their comprehensive Thai language processing tools that power the core functionality of this toolkit.
 
