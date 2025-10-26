@@ -23,10 +23,11 @@ The app will open in your browser at `http://localhost:8501`
 
 ### 📝 Breakdown Tab
 - **Word segmentation**: Split Thai text into individual words
-- **POS tagging**: Identify parts of speech (nouns, verbs, etc.)
-- **Romanization**: Convert Thai to Roman script (RTGS, Royin, ICU)
+- **POS tagging**: Identify parts of speech (nouns, verbs, etc.) with human-readable labels
+- **Romanization**: Convert Thai to Roman script using PyThaiNLP (thai2rom)
 - **Translation**: Get English meanings for words and sentences
 - **Language detection**: Auto-detect and translate English to Thai
+- **Gender-specific pronouns**: Select speaker gender for accurate Thai pronoun usage (ผม/ฉัน, ครับ/ค่ะ)
 
 ### 🔊 Speak Tab
 - **Text-to-speech**: High-quality Thai neural voices (male/female)
@@ -49,7 +50,8 @@ thai-language-toolkit/
 ├─ src/
 │  ├─ nlp/                         # NLP processing
 │  │  ├─ breakdown.py              # word segmentation, POS tagging
-│  │  └─ romanize.py               # romanization engines
+│  │  ├─ romanize.py               # romanization engines
+│  │  └─ gender_translation.py     # gender-specific pronoun adjustments
 │  ├─ speech/                      # text-to-speech
 │  │  ├─ gtts_engine.py            # Google TTS
 │  │  └─ edge_engine.py            # Edge TTS (neural voices)
@@ -57,6 +59,7 @@ thai-language-toolkit/
 ├─ data/                           # dictionaries & mappings
 │  ├─ thai_dict.py                 # Thai-English dictionary
 │  ├─ pos_labels.py                # POS tag labels
+│  ├─ gender_pronouns.py           # gender pronoun corpus
 │  └─ name_transliteration.py     # name transliteration
 ├─ apps/
 │  ├─ streamlit_app.py             # main Streamlit app
