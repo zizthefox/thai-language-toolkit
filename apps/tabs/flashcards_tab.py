@@ -10,6 +10,7 @@ sys.path.insert(0, str(root_path))
 
 import streamlit as st
 import json
+import random
 from study import Flashcard, FlashcardDeck
 
 # Path for saving flashcards
@@ -32,6 +33,9 @@ def render_flashcards_tab():
     if "show_answer" not in st.session_state:
         st.session_state.show_answer = False
 
+    if "shuffled_cards" not in st.session_state:
+        st.session_state.shuffled_cards = None
+
     deck = st.session_state.flashcard_deck
 
     # Create tabs for different modes
@@ -39,27 +43,62 @@ def render_flashcards_tab():
 
     # ============ STUDY TAB ============
     with tab1:
-        if not deck.cards:
-            st.info("No flashcards yet! Add some cards in the 'Add Cards' tab.")
+        # Deck selection
+        st.markdown("### 🎴 Select Deck to Study")
+
+        # Initialize deck choice in session state
+        if "deck_choice" not in st.session_state:
+            st.session_state.deck_choice = None
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            if st.button("💯 Thai 100 Common Words", use_container_width=True, type="secondary"):
+                st.session_state.deck_choice = "Thai 100 Common Words"
+                st.session_state.shuffled_cards = None  # Reset shuffle
+                st.session_state.current_card_index = 0
+                st.rerun()
+
+        with col2:
+            if st.button("💼 My Deck", use_container_width=True, type="secondary"):
+                st.session_state.deck_choice = "My Deck"
+                st.session_state.shuffled_cards = None  # Reset shuffle
+                st.session_state.current_card_index = 0
+                st.rerun()
+
+        # Show which deck is selected
+        if st.session_state.deck_choice:
+            st.info(f"Currently studying: **{st.session_state.deck_choice}**")
+
+        # Load appropriate deck based on selection
+        if st.session_state.deck_choice == "Thai 100 Common Words":
+            # Load example cards
+            with open(EXAMPLE_FLASHCARDS_FILE, 'r', encoding='utf-8') as f:
+                example_data = json.load(f)
+
+            study_cards = [Flashcard(**card_data) for card_data in example_data['cards']]
+        elif st.session_state.deck_choice == "My Deck":
+            # Use user's personal deck
+            study_cards = deck.cards.copy()
         else:
-            # Filter options
-            col1, col2 = st.columns([3, 1])
-            with col1:
-                difficulty_filter = st.selectbox(
-                    "Filter by difficulty:",
-                    ["All", "Learning", "Known", "Difficult"],
-                    key="study_filter"
-                )
+            # No deck selected yet
+            study_cards = []
 
-            # Get filtered cards
-            if difficulty_filter == "All":
-                study_cards = deck.cards
+        if not study_cards and st.session_state.deck_choice:
+            if st.session_state.deck_choice == "My Deck":
+                st.info("No cards in your deck yet! Add some cards in the 'Add Cards' tab or study the 'Thai 100 Common Words' deck.")
             else:
-                study_cards = deck.get_cards_by_difficulty(difficulty_filter.lower())
+                st.warning("Example deck not available")
+        elif study_cards:
+                # Shuffle cards if not already shuffled or if deck changed
+                if (st.session_state.shuffled_cards is None or
+                    len(st.session_state.shuffled_cards) != len(study_cards)):
+                    st.session_state.shuffled_cards = study_cards.copy()
+                    random.shuffle(st.session_state.shuffled_cards)
+                    st.session_state.current_card_index = 0
 
-            if not study_cards:
-                st.warning(f"No cards with difficulty: {difficulty_filter}")
-            else:
+                study_cards = st.session_state.shuffled_cards
+
                 # Card navigation
                 if st.session_state.current_card_index >= len(study_cards):
                     st.session_state.current_card_index = 0
@@ -137,29 +176,6 @@ def render_flashcards_tab():
                     else:
                         st.warning(f"Card '{thai}' already exists in the deck!")
 
-        # Load Example Cards
-        st.markdown("---")
-        st.markdown("### 📚 Load Example Cards")
-        st.caption("Try the flashcard system with 100 common Thai words!")
-
-        if st.button("📥 Load Example Cards (100 words)", type="secondary"):
-            # Load from JSON file
-            with open(EXAMPLE_FLASHCARDS_FILE, 'r', encoding='utf-8') as f:
-                example_data = json.load(f)
-
-            added_count = 0
-            for example in example_data['cards']:
-                card = Flashcard(**example)
-                if deck.add_card(card):
-                    added_count += 1
-
-            if added_count > 0:
-                deck.save_to_file(FLASHCARD_FILE)
-                st.success(f"✅ Loaded {added_count} example cards! Go to the Study tab to try them.")
-                st.rerun()
-            else:
-                st.info("Example cards already loaded!")
-
         # CSV Import
         st.markdown("---")
         st.markdown("### 📥 Import from CSV")
@@ -181,19 +197,7 @@ def render_flashcards_tab():
         st.markdown("### 📊 Deck Statistics")
 
         total = len(deck.cards)
-        learning = len(deck.get_cards_by_difficulty("learning"))
-        known = len(deck.get_cards_by_difficulty("known"))
-        difficult = len(deck.get_cards_by_difficulty("difficult"))
-
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.metric("Total Cards", total)
-        with col2:
-            st.metric("Learning", learning)
-        with col3:
-            st.metric("Known", known)
-        with col4:
-            st.metric("Difficult", difficult)
+        st.metric("Total Cards", total)
 
         st.markdown("---")
         st.markdown("### 📥 Export Deck")
@@ -222,8 +226,6 @@ def render_flashcards_tab():
                         st.write(f"**Part of Speech:** {card.pos_tag}")
                     if card.example:
                         st.write(f"**Example:** {card.example}")
-                    st.write(f"**Difficulty:** {card.difficulty}")
-                    st.write(f"**Times Reviewed:** {card.times_reviewed}")
 
                     if st.button(f"🗑️ Delete", key=f"delete_{i}"):
                         deck.remove_card(i)
