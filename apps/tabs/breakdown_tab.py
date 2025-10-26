@@ -2,6 +2,7 @@
 
 import sys
 from pathlib import Path
+import re
 
 # Add both src and root to path for imports
 root_path = Path(__file__).parent.parent.parent
@@ -9,7 +10,61 @@ sys.path.insert(0, str(root_path / "src"))
 sys.path.insert(0, str(root_path))
 
 import streamlit as st
-from data import get_pos_label
+from data import get_pos_label, GENDER_PHRASES, GENDER_PRONOUNS
+
+
+def apply_gender_translation(english_text: str, thai_text: str, gender: str) -> str:
+    """
+    Apply gender-specific translation using corpus mapping.
+
+    Args:
+        english_text: Original English text
+        thai_text: Google-translated Thai text
+        gender: "Male", "Female", or "Neutral"
+
+    Returns:
+        Thai text with gender-appropriate pronouns from corpus
+    """
+    if gender == "Neutral":
+        return thai_text
+
+    gender_key = gender.lower()
+
+    # First, check if entire phrase has a direct mapping in corpus
+    english_lower = english_text.lower().strip()
+    if english_lower in GENDER_PHRASES[gender_key]:
+        return GENDER_PHRASES[gender_key][english_lower]
+
+    # Apply pronoun replacements using corpus
+    pronouns = GENDER_PRONOUNS[gender_key]
+
+    # Step 1: Replace possessives first (most specific)
+    thai_text = thai_text.replace("ของฉัน", pronouns["my"])
+    thai_text = thai_text.replace("ของดิฉัน", pronouns["my"])
+    thai_text = thai_text.replace("ของผม", pronouns["my"])
+
+    # Step 2: Replace ALL instances of ฉัน and ดิฉัน with gender-appropriate pronoun
+    # This works for both subject (I) and object (me) positions
+    thai_text = thai_text.replace("ฉัน", pronouns["i"])
+    thai_text = thai_text.replace("ดิฉัน", pronouns["i"])
+
+    # Step 3: For female speakers, carefully replace ผม (pronoun) but not ผม (hair)
+    # We only replace ผม when it's NOT preceded by "รัก" (love) - simple heuristic
+    if gender_key == "female":
+        # Replace ผม at sentence start (pronoun)
+        if thai_text.startswith("ผม"):
+            thai_text = pronouns["i"] + thai_text[2:]
+        # Replace ผม after spaces when NOT after รัก/ชอบ (which would make it "hair")
+        thai_text = re.sub(r'(?<!รัก)(?<!ชอบ)\s+ผม\b', ' ' + pronouns["i"], thai_text)
+
+    # Replace polite particles
+    if gender_key == "male":
+        thai_text = thai_text.replace("ค่ะ", pronouns["polite_particle"])
+        thai_text = thai_text.replace("คะ", pronouns["polite_particle"])
+    else:  # female
+        thai_text = thai_text.replace("ครับ", pronouns["polite_particle"])
+
+    return thai_text
 
 
 def render_breakdown_tab(breakdown_engine, romanizer):
@@ -30,13 +85,27 @@ def render_breakdown_tab(breakdown_engine, romanizer):
 
     with col2:
         st.markdown("### Options")
+
+        # Gender selection for translations
+        st.markdown("### 👤 Speaker Gender")
+        gender = st.radio(
+            "Select your gender:",
+            ["Male", "Female", "Neutral"],
+            index=0,
+            help="Thai language uses different pronouns and polite particles based on speaker gender:\n"
+                 "• Male: ผม (phom) = I, ครับ (khrap) = polite particle\n"
+                 "• Female: ฉัน (chan) = I, ค่ะ (kha) = polite particle\n"
+                 "• Neutral: Generic translations without gender-specific terms"
+        )
+
+        st.markdown("### 🔧 Analysis Options")
         include_pos = st.checkbox("Include POS tags", value=True)
         include_translation = st.checkbox("Include English meanings", value=True)
         filter_stopwords = st.checkbox("Filter stopwords", value=False)
         romanization_engine = st.selectbox(
             "Romanization system:",
             ["thai2rom", "royin", "icu"],
-            help="PyThaiNLP (thai2rom) is the official Thai this romanization system"
+            help="PyThaiNLP (thai2rom) is the official Thai romanization system"
         )
 
     if st.button("🔍 Analyze", type="primary"):
@@ -48,9 +117,16 @@ def render_breakdown_tab(breakdown_engine, romanizer):
 
                 # If English, translate to Thai first
                 if detected_lang == 'english':
-                    st.info("🔄 Detected English text. Translating to Thai...")
+                    st.info(f"🔄 Detected English text. Translating to Thai ({gender.lower()} speaker)...")
                     original_english = input_text  # Save original English input
+
+                    # Get base translation from Google Translate
                     thai_text = breakdown_engine.translate_to_thai(input_text)
+
+                    # Apply gender-specific adjustments using corpus
+                    if thai_text:
+                        thai_text = apply_gender_translation(input_text, thai_text, gender)
+
                     if thai_text:
                         st.success(f"📝 Thai translation: {thai_text}")
                     else:

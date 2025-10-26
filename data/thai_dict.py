@@ -5,9 +5,8 @@ THAI_ENGLISH_DICT = {
     "ครับ": "(polite particle for males)",
     "ค่ะ": "(polite particle for females)",
     "ผม": "I (male) / hair",
-    "ฉัน": "I",
+    "ฉัน": "I (female)",
     "ชื่อ": "name",
-    "จอห์น": "John",
     "คุณ": "you",
     "ขอบคุณ": "thank you",
     "ใช่": "yes",
@@ -77,4 +76,5 @@ THAI_ENGLISH_DICT = {
     "ครู": "teacher",
     "หมอ": "doctor",
     "รู้จัก": "know",
+    "ไหม": "(question particle) / silk"
 }

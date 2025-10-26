@@ -233,12 +233,13 @@ class ThaiBreakdown:
         else:
             return 'mixed'
 
-    def translate_to_thai(self, text: str) -> Optional[str]:
+    def translate_to_thai(self, text: str, gender: str = "neutral") -> Optional[str]:
         """
         Translate English text to Thai using Google Translate or fallback.
 
         Args:
             text: English text to translate
+            gender: "male", "female", or "neutral" for gender-appropriate pronouns
 
         Returns:
             Thai translation or None if unavailable
