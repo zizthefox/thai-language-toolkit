@@ -33,11 +33,13 @@ POS_LABELS = {
     "ADVP": "Adverbial Phrase",
     "ADVI": "Adverb of Inquiry",
     "ADVS": "Adverb of Space",
+    "JSBR": "Subordinating Conjunction",
     "JCRG": "Coordinating Conjunction",
     "JCMP": "Comparative Conjunction",
     "NEG": "Negation",
     "PREL": "Relative Pronoun",
     "PPRS": "Personal Pronoun",
+    "PNTR": "Interrogative Pronoun",
     "RPRE": "Preposition",
     "EAFF": "Affirmative Particle",
     "CFQC": "Classifier",
@@ -45,6 +47,7 @@ POS_LABELS = {
     "FIXN": "Prefix/Suffix",
     "FIXV": "Verb Prefix",
     "EITT": "Iterative Particle",
+    "PUNC": "Punctuation",
 }
 
 
@@ -56,6 +59,12 @@ def get_pos_label(pos_tag: str) -> str:
         pos_tag: The POS tag acronym
 
     Returns:
-        Human-readable label, or the original tag if not found
+        Human-readable label, or a formatted version if not found
     """
-    return POS_LABELS.get(pos_tag, pos_tag)
+    # Return mapped label if available
+    if pos_tag in POS_LABELS:
+        return POS_LABELS[pos_tag]
+
+    # For unmapped tags, return the tag with a note
+    # This helps users know it's a technical tag we haven't mapped yet
+    return f"{pos_tag} (unmapped)"
