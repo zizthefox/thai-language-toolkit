@@ -1,8 +1,9 @@
 """POS tag labels mapping for human-readable display."""
 
 # POS tag mapping to human-readable labels
-# Based on PyThaiNLP's POS tagging output
+# Based on PyThaiNLP's ORCHID POS tagging output (47 tags)
 POS_LABELS = {
+    # Universal POS tags
     "NOUN": "Noun",
     "VERB": "Verb",
     "ADJ": "Adjective",
@@ -21,8 +22,11 @@ POS_LABELS = {
     "PUNCT": "Punctuation",
     "SYM": "Symbol",
     "X": "Other",
+
+    # ORCHID POS tags (Thai-specific)
     "NCMN": "Common Noun",
     "NPRP": "Proper Noun",
+    "DONM": "Determiner",
     "VACT": "Active Verb",
     "VSTA": "Stative Verb",
     "ADVN": "Adverb",
@@ -33,6 +37,8 @@ POS_LABELS = {
     "JCMP": "Comparative Conjunction",
     "NEG": "Negation",
     "PREL": "Relative Pronoun",
+    "PPRS": "Personal Pronoun",
+    "RPRE": "Preposition",
     "EAFF": "Affirmative Particle",
     "CFQC": "Classifier",
     "CMTR": "Comparative Marker",
