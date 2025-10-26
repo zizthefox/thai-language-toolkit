@@ -9,17 +9,18 @@ sys.path.insert(0, str(root_path / "src"))
 sys.path.insert(0, str(root_path))
 
 import streamlit as st
+import json
 from study import Flashcard, FlashcardDeck
-from data.example_flashcards import EXAMPLE_FLASHCARDS
 
 # Path for saving flashcards
 FLASHCARD_FILE = root_path / "data" / "flashcards.json"
+EXAMPLE_FLASHCARDS_FILE = root_path / "data" / "example_flashcards.json"
 
 
 def render_flashcards_tab():
     """Render the flashcards tab."""
     st.header("📚 Flashcards")
-    st.markdown(":yellow[Review Thai vocabulary with interactive flashcards - flip, grade, and track your progress!]")
+    st.markdown("Review Thai vocabulary with interactive flashcards")
 
     # Initialize session state for deck
     if "flashcard_deck" not in st.session_state:
@@ -72,9 +73,10 @@ def render_flashcards_tab():
                 # Flashcard display
                 st.markdown("---")
 
-                # Front of card (Thai)
-                st.markdown("### 🇹🇭 Thai")
-                st.markdown(f"<h1 style='text-align: center; font-size: 3em;'>{current_card.thai}</h1>",
+                # Front of card (Thai + Romanization)
+                st.markdown(f"<h1 style='text-align: center; font-size: 3.5em; margin-bottom: 0;'>{current_card.thai}</h1>",
+                           unsafe_allow_html=True)
+                st.markdown(f"<p style='text-align: center; font-size: 1.2em; color: #888; margin-top: 5px;'>({current_card.romanization})</p>",
                            unsafe_allow_html=True)
 
                 # Show answer button
@@ -83,14 +85,9 @@ def render_flashcards_tab():
                         st.session_state.show_answer = True
                         st.rerun()
                 else:
-                    # Back of card (English + Romanization)
+                    # Back of card (English)
                     st.markdown("---")
-                    st.markdown("### 🔤 Romanization")
-                    st.markdown(f"<h2 style='text-align: center; color: #888;'>{current_card.romanization}</h2>",
-                               unsafe_allow_html=True)
-
-                    st.markdown("### 🇬🇧 English")
-                    st.markdown(f"<h2 style='text-align: center;'>{current_card.english}</h2>",
+                    st.markdown(f"<h2 style='text-align: center; font-size: 2em;'>{current_card.english}</h2>",
                                unsafe_allow_html=True)
 
                     if current_card.pos_tag:
@@ -146,8 +143,12 @@ def render_flashcards_tab():
         st.caption("Try the flashcard system with 100 common Thai words!")
 
         if st.button("📥 Load Example Cards (100 words)", type="secondary"):
+            # Load from JSON file
+            with open(EXAMPLE_FLASHCARDS_FILE, 'r', encoding='utf-8') as f:
+                example_data = json.load(f)
+
             added_count = 0
-            for example in EXAMPLE_FLASHCARDS:
+            for example in example_data['cards']:
                 card = Flashcard(**example)
                 if deck.add_card(card):
                     added_count += 1
