@@ -7,7 +7,7 @@ from pythainlp import word_tokenize, pos_tag
 from pythainlp.corpus import thai_stopwords
 from deep_translator import MyMemoryTranslator
 from googletrans import Translator
-from ..data import THAI_ENGLISH_DICT, ENGLISH_THAI_NAMES
+from data import THAI_ENGLISH_DICT, ENGLISH_THAI_NAMES
 
 
 class ThaiBreakdown:

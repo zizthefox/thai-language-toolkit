@@ -5,8 +5,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 import streamlit as st
-from tlt.nlp import ThaiBreakdown, ThaiRomanizer
-from tlt.speech import ThaiTTS
+from nlp import ThaiBreakdown, ThaiRomanizer
+from speech import ThaiTTS
 
 from tabs import (
     render_breakdown_tab,

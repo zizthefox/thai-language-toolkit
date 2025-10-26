@@ -47,18 +47,17 @@ The app will open in your browser at `http://localhost:8501`
 ```bash
 thai-language-toolkit/
 ├─ src/
-│  └─ tlt/
-│     ├─ nlp/                      # NLP processing
-│     │  ├─ breakdown.py           # word segmentation, POS tagging
-│     │  └─ romanize.py            # romanization engines
-│     ├─ speech/                   # text-to-speech
-│     │  ├─ gtts_engine.py         # Google TTS
-│     │  └─ edge_engine.py         # Edge TTS (neural voices)
-│     ├─ data/                     # dictionaries & mappings
-│     │  ├─ thai_dict.py           # Thai-English dictionary
-│     │  ├─ pos_labels.py          # POS tag labels
-│     │  └─ name_transliteration.py
-│     └─ study/                    # learning tools (flashcards, games)
+│  ├─ nlp/                         # NLP processing
+│  │  ├─ breakdown.py              # word segmentation, POS tagging
+│  │  └─ romanize.py               # romanization engines
+│  ├─ speech/                      # text-to-speech
+│  │  ├─ gtts_engine.py            # Google TTS
+│  │  └─ edge_engine.py            # Edge TTS (neural voices)
+│  ├─ data/                        # dictionaries & mappings
+│  │  ├─ thai_dict.py              # Thai-English dictionary
+│  │  ├─ pos_labels.py             # POS tag labels
+│  │  └─ name_transliteration.py
+│  └─ study/                       # learning tools (flashcards, games)
 ├─ apps/
 │  ├─ streamlit_app.py             # main Streamlit app
 │  └─ tabs/                        # modular tab components

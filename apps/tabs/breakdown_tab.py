@@ -5,7 +5,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
 import streamlit as st
-from tlt.data import get_pos_label
+from data import get_pos_label
 
 
 def render_breakdown_tab(breakdown_engine, romanizer):
