@@ -2,7 +2,6 @@
 
 import sys
 from pathlib import Path
-import re
 
 # Add both src and root to path for imports
 root_path = Path(__file__).parent.parent.parent
@@ -10,86 +9,29 @@ sys.path.insert(0, str(root_path / "src"))
 sys.path.insert(0, str(root_path))
 
 import streamlit as st
-from data import get_pos_label, GENDER_PHRASES, GENDER_PRONOUNS
-
-
-def apply_gender_translation(english_text: str, thai_text: str, gender: str) -> str:
-    """
-    Apply gender-specific translation using corpus mapping.
-
-    Args:
-        english_text: Original English text
-        thai_text: Google-translated Thai text
-        gender: "Male", "Female", or "Neutral"
-
-    Returns:
-        Thai text with gender-appropriate pronouns from corpus
-    """
-    if gender == "Neutral":
-        return thai_text
-
-    gender_key = gender.lower()
-
-    # First, check if entire phrase has a direct mapping in corpus
-    english_lower = english_text.lower().strip()
-    if english_lower in GENDER_PHRASES[gender_key]:
-        return GENDER_PHRASES[gender_key][english_lower]
-
-    # Apply pronoun replacements using corpus
-    pronouns = GENDER_PRONOUNS[gender_key]
-
-    # Step 1: Replace possessives first (most specific)
-    thai_text = thai_text.replace("ของฉัน", pronouns["my"])
-    thai_text = thai_text.replace("ของดิฉัน", pronouns["my"])
-    thai_text = thai_text.replace("ของผม", pronouns["my"])
-
-    # Step 2: Replace ALL instances of ฉัน and ดิฉัน with gender-appropriate pronoun
-    # This works for both subject (I) and object (me) positions
-    thai_text = thai_text.replace("ฉัน", pronouns["i"])
-    thai_text = thai_text.replace("ดิฉัน", pronouns["i"])
-
-    # Step 3: For female speakers, carefully replace ผม (pronoun) but not ผม (hair)
-    # We only replace ผม when it's NOT preceded by "รัก" (love) - simple heuristic
-    if gender_key == "female":
-        # Replace ผม at sentence start (pronoun)
-        if thai_text.startswith("ผม"):
-            thai_text = pronouns["i"] + thai_text[2:]
-        # Replace ผม after spaces when NOT after รัก/ชอบ (which would make it "hair")
-        thai_text = re.sub(r'(?<!รัก)(?<!ชอบ)\s+ผม\b', ' ' + pronouns["i"], thai_text)
-
-    # Replace polite particles
-    if gender_key == "male":
-        thai_text = thai_text.replace("ค่ะ", pronouns["polite_particle"])
-        thai_text = thai_text.replace("คะ", pronouns["polite_particle"])
-    else:  # female
-        thai_text = thai_text.replace("ครับ", pronouns["polite_particle"])
-
-    return thai_text
+from data import get_pos_label
+from nlp import apply_gender_translation
 
 
 def render_breakdown_tab(breakdown_engine, romanizer):
     """Render the breakdown tab with text analysis functionality."""
     st.header("Thai Text Breakdown")
-    st.markdown("Analyze Thai text with word segmentation, POS tagging, and romanization")
+    st.markdown("Break down Thai text into words, see pronunciations, understand grammar parts, and translate meanings - perfect for learning Thai!")
 
     # Input section
     col1, col2 = st.columns([2, 1])
 
     with col1:
         input_text = st.text_area(
-            "Enter Thai or English text:",
+            "Enter :orange[**English**] text to translate and analyze, or just :orange[**Thai**] text to analyze: ",
             value="สวัสดีครับ ผมชื่อจอห์น",
             height=100,
-            help="Enter Thai text to analyze, or English text to translate and analyze"
         )
 
     with col2:
-        st.markdown("### Options")
-
         # Gender selection for translations
-        st.markdown("### 👤 Speaker Gender")
         gender = st.radio(
-            "Select your gender:",
+            "👤 **Select your gender:**",
             ["Male", "Female", "Neutral"],
             index=0,
             help="Thai language uses different pronouns and polite particles based on speaker gender:\n"
@@ -98,15 +40,11 @@ def render_breakdown_tab(breakdown_engine, romanizer):
                  "• Neutral: Generic translations without gender-specific terms"
         )
 
-        st.markdown("### 🔧 Analysis Options")
-        include_pos = st.checkbox("Include POS tags", value=True)
-        include_translation = st.checkbox("Include English meanings", value=True)
-        filter_stopwords = st.checkbox("Filter stopwords", value=False)
-        romanization_engine = st.selectbox(
-            "Romanization system:",
-            ["thai2rom", "royin", "icu"],
-            help="PyThaiNLP (thai2rom) is the official Thai romanization system"
-        )
+        # Set defaults (no UI needed for learners)
+        include_pos = True
+        include_translation = True
+        filter_stopwords = False
+        romanization_engine = "thai2rom"
 
     if st.button("🔍 Analyze", type="primary"):
         if input_text:
