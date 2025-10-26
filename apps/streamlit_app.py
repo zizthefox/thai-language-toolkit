@@ -2,7 +2,11 @@
 
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+# Add both src and root to path for imports
+root_path = Path(__file__).parent.parent
+sys.path.insert(0, str(root_path / "src"))
+sys.path.insert(0, str(root_path))
 
 import streamlit as st
 from nlp import ThaiBreakdown, ThaiRomanizer

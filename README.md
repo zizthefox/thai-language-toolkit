@@ -53,11 +53,11 @@ thai-language-toolkit/
 │  ├─ speech/                      # text-to-speech
 │  │  ├─ gtts_engine.py            # Google TTS
 │  │  └─ edge_engine.py            # Edge TTS (neural voices)
-│  ├─ data/                        # dictionaries & mappings
-│  │  ├─ thai_dict.py              # Thai-English dictionary
-│  │  ├─ pos_labels.py             # POS tag labels
-│  │  └─ name_transliteration.py
 │  └─ study/                       # learning tools (flashcards, games)
+├─ data/                           # dictionaries & mappings
+│  ├─ thai_dict.py                 # Thai-English dictionary
+│  ├─ pos_labels.py                # POS tag labels
+│  └─ name_transliteration.py     # name transliteration
 ├─ apps/
 │  ├─ streamlit_app.py             # main Streamlit app
 │  └─ tabs/                        # modular tab components
