@@ -10,6 +10,7 @@ sys.path.insert(0, str(root_path))
 
 import streamlit as st
 from study import Flashcard, FlashcardDeck
+from data.example_flashcards import EXAMPLE_FLASHCARDS
 
 # Path for saving flashcards
 FLASHCARD_FILE = root_path / "data" / "flashcards.json"
@@ -98,58 +99,14 @@ def render_flashcards_tab():
                     if current_card.example:
                         st.info(f"Example: {current_card.example}")
 
-                    # Self-grading buttons
+                    # Next card button
                     st.markdown("---")
-                    st.markdown("### How well did you know this?")
-                    col1, col2, col3, col4 = st.columns(4)
-
-                    with col1:
-                        if st.button("❌ Again", use_container_width=True):
-                            deck.update_card_difficulty(
-                                deck.cards.index(current_card), "difficult"
-                            )
-                            st.session_state.show_answer = False
-                            st.session_state.current_card_index = (
-                                st.session_state.current_card_index + 1
-                            ) % len(study_cards)
-                            deck.save_to_file(FLASHCARD_FILE)
-                            st.rerun()
-
-                    with col2:
-                        if st.button("😕 Hard", use_container_width=True):
-                            deck.update_card_difficulty(
-                                deck.cards.index(current_card), "learning"
-                            )
-                            st.session_state.show_answer = False
-                            st.session_state.current_card_index = (
-                                st.session_state.current_card_index + 1
-                            ) % len(study_cards)
-                            deck.save_to_file(FLASHCARD_FILE)
-                            st.rerun()
-
-                    with col3:
-                        if st.button("😊 Good", use_container_width=True):
-                            deck.update_card_difficulty(
-                                deck.cards.index(current_card), "learning"
-                            )
-                            st.session_state.show_answer = False
-                            st.session_state.current_card_index = (
-                                st.session_state.current_card_index + 1
-                            ) % len(study_cards)
-                            deck.save_to_file(FLASHCARD_FILE)
-                            st.rerun()
-
-                    with col4:
-                        if st.button("✅ Easy", use_container_width=True):
-                            deck.update_card_difficulty(
-                                deck.cards.index(current_card), "known"
-                            )
-                            st.session_state.show_answer = False
-                            st.session_state.current_card_index = (
-                                st.session_state.current_card_index + 1
-                            ) % len(study_cards)
-                            deck.save_to_file(FLASHCARD_FILE)
-                            st.rerun()
+                    if st.button("➡️ Next Card", type="primary", use_container_width=True):
+                        st.session_state.show_answer = False
+                        st.session_state.current_card_index = (
+                            st.session_state.current_card_index + 1
+                        ) % len(study_cards)
+                        st.rerun()
 
     # ============ ADD CARDS TAB ============
     with tab2:
@@ -182,6 +139,25 @@ def render_flashcards_tab():
                         st.rerun()
                     else:
                         st.warning(f"Card '{thai}' already exists in the deck!")
+
+        # Load Example Cards
+        st.markdown("---")
+        st.markdown("### 📚 Load Example Cards")
+        st.caption("Try the flashcard system with 100 common Thai words!")
+
+        if st.button("📥 Load Example Cards (100 words)", type="secondary"):
+            added_count = 0
+            for example in EXAMPLE_FLASHCARDS:
+                card = Flashcard(**example)
+                if deck.add_card(card):
+                    added_count += 1
+
+            if added_count > 0:
+                deck.save_to_file(FLASHCARD_FILE)
+                st.success(f"✅ Loaded {added_count} example cards! Go to the Study tab to try them.")
+                st.rerun()
+            else:
+                st.info("Example cards already loaded!")
 
         # CSV Import
         st.markdown("---")

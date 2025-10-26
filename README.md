@@ -36,12 +36,10 @@ The app will open in your browser at `http://localhost:8501`
 
 ### 📚 Flashcards
 - **Interactive flip-cards**: Thai → show answer → Romanization + English
-- **Self-grading system**: Again / Hard / Good / Easy buttons to track progress
 - **Manual card creation**: Add Thai words with romanization, English, POS tags, examples
 - **CSV import/export**: Import vocabulary lists or export for Anki/other SRS apps
-- **Difficulty filtering**: Study by Learning / Known / Difficult categories
-- **Progress tracking**: View stats and review history
-- **Coming soon**: Auto-save words from Breakdown Tab analysis
+- **Deck management**: View stats, browse all cards, delete cards
+- **Coming soon**: Auto-save words from Breakdown Tab, self-grading system
 
 ### 🎮 Tone Game (Coming Soon)
 - Listen and pick the correct tone/word

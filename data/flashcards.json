@@ -1,0 +1,995 @@
+{
+  "name": "My Deck",
+  "cards": [
+    {
+      "thai": "สวัสดี",
+      "english": "hello",
+      "romanization": "sawatdii",
+      "pos_tag": "Interjection",
+      "example": "สวัสดีครับ ยินดีที่ได้รู้จัก",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ขอบคุณ",
+      "english": "thank you",
+      "romanization": "khop khun",
+      "pos_tag": "Verb",
+      "example": "ขอบคุณมากครับ",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ขอโทษ",
+      "english": "sorry, excuse me",
+      "romanization": "kho thot",
+      "pos_tag": "Verb",
+      "example": "ขอโทษครับ",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ลาก่อน",
+      "english": "goodbye",
+      "romanization": "laa kon",
+      "pos_tag": "Verb",
+      "example": "ลาก่อนนะครับ",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ผม",
+      "english": "I, me (male)",
+      "romanization": "phom",
+      "pos_tag": "Pronoun",
+      "example": "ผมชื่อจอห์น",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ฉัน",
+      "english": "I, me (female/informal)",
+      "romanization": "chan",
+      "pos_tag": "Pronoun",
+      "example": "ฉันชื่อมารี",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "คุณ",
+      "english": "you",
+      "romanization": "khun",
+      "pos_tag": "Pronoun",
+      "example": "คุณชื่ออะไร",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "เขา",
+      "english": "he, she, they",
+      "romanization": "khao",
+      "pos_tag": "Pronoun",
+      "example": "เขาเป็นครู",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "เรา",
+      "english": "we, us",
+      "romanization": "rao",
+      "pos_tag": "Pronoun",
+      "example": "เราเป็นเพื่อน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "เป็น",
+      "english": "to be, is, am, are",
+      "romanization": "pen",
+      "pos_tag": "Verb",
+      "example": "ผมเป็นนักเรียน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "มี",
+      "english": "to have",
+      "romanization": "mii",
+      "pos_tag": "Verb",
+      "example": "ผมมีหนังสือ",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ไป",
+      "english": "to go",
+      "romanization": "pai",
+      "pos_tag": "Verb",
+      "example": "ผมจะไปตลาด",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "มา",
+      "english": "to come",
+      "romanization": "maa",
+      "pos_tag": "Verb",
+      "example": "มาที่นี่",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "รัก",
+      "english": "to love",
+      "romanization": "rak",
+      "pos_tag": "Verb",
+      "example": "ผมรักคุณ",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ชอบ",
+      "english": "to like",
+      "romanization": "chop",
+      "pos_tag": "Verb",
+      "example": "ฉันชอบอาหารไทย",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "กิน",
+      "english": "to eat",
+      "romanization": "kin",
+      "pos_tag": "Verb",
+      "example": "กินข้าวหรือยัง",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ดื่ม",
+      "english": "to drink",
+      "romanization": "duum",
+      "pos_tag": "Verb",
+      "example": "ดื่มน้ำ",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "พูด",
+      "english": "to speak, to say",
+      "romanization": "phuut",
+      "pos_tag": "Verb",
+      "example": "พูดภาษาไทย",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ฟัง",
+      "english": "to listen",
+      "romanization": "fang",
+      "pos_tag": "Verb",
+      "example": "ฟังเพลง",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ดู",
+      "english": "to look, to watch",
+      "romanization": "duu",
+      "pos_tag": "Verb",
+      "example": "ดูหนัง",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "อ่าน",
+      "english": "to read",
+      "romanization": "aan",
+      "pos_tag": "Verb",
+      "example": "อ่านหนังสือ",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "เขียน",
+      "english": "to write",
+      "romanization": "khian",
+      "pos_tag": "Verb",
+      "example": "เขียนจดหมาย",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ทำ",
+      "english": "to do, to make",
+      "romanization": "tham",
+      "pos_tag": "Verb",
+      "example": "ทำงาน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ทำงาน",
+      "english": "to work",
+      "romanization": "tham ngaan",
+      "pos_tag": "Verb",
+      "example": "ผมทำงานที่ธนาคาร",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "เรียน",
+      "english": "to study, to learn",
+      "romanization": "riian",
+      "pos_tag": "Verb",
+      "example": "เรียนภาษาไทย",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "สอน",
+      "english": "to teach",
+      "romanization": "son",
+      "pos_tag": "Verb",
+      "example": "สอนภาษาอังกฤษ",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "รู้",
+      "english": "to know",
+      "romanization": "ruu",
+      "pos_tag": "Verb",
+      "example": "ผมรู้จักคุณ",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "เข้าใจ",
+      "english": "to understand",
+      "romanization": "khao jai",
+      "pos_tag": "Verb",
+      "example": "เข้าใจไหม",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "อยู่",
+      "english": "to be (located), to stay",
+      "romanization": "yuu",
+      "pos_tag": "Verb",
+      "example": "อยู่ที่ไหน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "นอน",
+      "english": "to sleep",
+      "romanization": "non",
+      "pos_tag": "Verb",
+      "example": "นอนหลับฝันดี",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ตื่น",
+      "english": "to wake up",
+      "romanization": "tuen",
+      "pos_tag": "Verb",
+      "example": "ตื่นเช้า",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ซื้อ",
+      "english": "to buy",
+      "romanization": "suu",
+      "pos_tag": "Verb",
+      "example": "ซื้อของ",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ขาย",
+      "english": "to sell",
+      "romanization": "khaai",
+      "pos_tag": "Verb",
+      "example": "ขายอาหาร",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ชื่อ",
+      "english": "name",
+      "romanization": "chuu",
+      "pos_tag": "Noun",
+      "example": "คุณชื่ออะไร",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "คน",
+      "english": "person, people",
+      "romanization": "khon",
+      "pos_tag": "Noun",
+      "example": "มีคนมากมาย",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "บ้าน",
+      "english": "house, home",
+      "romanization": "baan",
+      "pos_tag": "Noun",
+      "example": "บ้านของผม",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "เมือง",
+      "english": "city, town",
+      "romanization": "mueang",
+      "pos_tag": "Noun",
+      "example": "เมืองไทย",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ประเทศ",
+      "english": "country",
+      "romanization": "prathet",
+      "pos_tag": "Noun",
+      "example": "ประเทศไทย",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "น้ำ",
+      "english": "water",
+      "romanization": "naam",
+      "pos_tag": "Noun",
+      "example": "ขอน้ำหน่อย",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ข้าว",
+      "english": "rice, food",
+      "romanization": "khaao",
+      "pos_tag": "Noun",
+      "example": "กินข้าว",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "อาหาร",
+      "english": "food",
+      "romanization": "aahaan",
+      "pos_tag": "Noun",
+      "example": "อาหารไทย",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "เงิน",
+      "english": "money",
+      "romanization": "ngoen",
+      "pos_tag": "Noun",
+      "example": "มีเงินเท่าไหร่",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "เวลา",
+      "english": "time",
+      "romanization": "weelaa",
+      "pos_tag": "Noun",
+      "example": "เวลาทำงาน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "วัน",
+      "english": "day",
+      "romanization": "wan",
+      "pos_tag": "Noun",
+      "example": "วันนี้",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ปี",
+      "english": "year",
+      "romanization": "pii",
+      "pos_tag": "Noun",
+      "example": "ปีที่แล้ว",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "เดือน",
+      "english": "month",
+      "romanization": "duean",
+      "pos_tag": "Noun",
+      "example": "เดือนหน้า",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ที่",
+      "english": "place, that",
+      "romanization": "thii",
+      "pos_tag": "Noun",
+      "example": "ที่นี่",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "เพื่อน",
+      "english": "friend",
+      "romanization": "phuean",
+      "pos_tag": "Noun",
+      "example": "เพื่อนของผม",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ครอบครัว",
+      "english": "family",
+      "romanization": "khrop khrua",
+      "pos_tag": "Noun",
+      "example": "ครอบครัวของฉัน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "พ่อ",
+      "english": "father",
+      "romanization": "pho",
+      "pos_tag": "Noun",
+      "example": "พ่อของผม",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "แม่",
+      "english": "mother",
+      "romanization": "mae",
+      "pos_tag": "Noun",
+      "example": "แม่ของฉัน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ลูก",
+      "english": "child",
+      "romanization": "luuk",
+      "pos_tag": "Noun",
+      "example": "ลูกชาย",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ภาษา",
+      "english": "language",
+      "romanization": "phaasaa",
+      "pos_tag": "Noun",
+      "example": "ภาษาไทย",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "โรงเรียน",
+      "english": "school",
+      "romanization": "roong riian",
+      "pos_tag": "Noun",
+      "example": "ไปโรงเรียน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "มหาวิทยาลัย",
+      "english": "university",
+      "romanization": "mahaa witthayaalai",
+      "pos_tag": "Noun",
+      "example": "เรียนที่มหาวิทยาลัย",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ครู",
+      "english": "teacher",
+      "romanization": "khruu",
+      "pos_tag": "Noun",
+      "example": "เขาเป็นครู",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "นักเรียน",
+      "english": "student",
+      "romanization": "nak riian",
+      "pos_tag": "Noun",
+      "example": "ผมเป็นนักเรียน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "หนังสือ",
+      "english": "book",
+      "romanization": "nang suu",
+      "pos_tag": "Noun",
+      "example": "อ่านหนังสือ",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "รถ",
+      "english": "car, vehicle",
+      "romanization": "rot",
+      "pos_tag": "Noun",
+      "example": "รถของคุณ",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ร้าน",
+      "english": "shop, store",
+      "romanization": "raan",
+      "pos_tag": "Noun",
+      "example": "ร้านกาแฟ",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ตลาด",
+      "english": "market",
+      "romanization": "talaat",
+      "pos_tag": "Noun",
+      "example": "ไปตลาด",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ดี",
+      "english": "good",
+      "romanization": "dii",
+      "pos_tag": "Adjective",
+      "example": "อาหารดี",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ไม่ดี",
+      "english": "not good, bad",
+      "romanization": "mai dii",
+      "pos_tag": "Adjective",
+      "example": "อากาศไม่ดี",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "อร่อย",
+      "english": "delicious",
+      "romanization": "aroi",
+      "pos_tag": "Adjective",
+      "example": "อาหารอร่อย",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "สวย",
+      "english": "beautiful (for women/things)",
+      "romanization": "suai",
+      "pos_tag": "Adjective",
+      "example": "คุณสวย",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "หล่อ",
+      "english": "handsome (for men)",
+      "romanization": "lo",
+      "pos_tag": "Adjective",
+      "example": "เขาหล่อ",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ใหญ่",
+      "english": "big, large",
+      "romanization": "yai",
+      "pos_tag": "Adjective",
+      "example": "บ้านใหญ่",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "เล็ก",
+      "english": "small",
+      "romanization": "lek",
+      "pos_tag": "Adjective",
+      "example": "ร้านเล็ก",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "มาก",
+      "english": "much, many, very",
+      "romanization": "maak",
+      "pos_tag": "Adjective",
+      "example": "ขอบคุณมาก",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "น้อย",
+      "english": "little, few",
+      "romanization": "noi",
+      "pos_tag": "Adjective",
+      "example": "คนน้อย",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ยาก",
+      "english": "difficult",
+      "romanization": "yaak",
+      "pos_tag": "Adjective",
+      "example": "ภาษาไทยยาก",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ง่าย",
+      "english": "easy",
+      "romanization": "ngaai",
+      "pos_tag": "Adjective",
+      "example": "ง่ายมาก",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "แพง",
+      "english": "expensive",
+      "romanization": "phaeng",
+      "pos_tag": "Adjective",
+      "example": "รถแพง",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ถูก",
+      "english": "cheap",
+      "romanization": "thuuk",
+      "pos_tag": "Adjective",
+      "example": "อาหารถูก",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ร้อน",
+      "english": "hot",
+      "romanization": "ron",
+      "pos_tag": "Adjective",
+      "example": "อากาศร้อน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "หนาว",
+      "english": "cold",
+      "romanization": "naao",
+      "pos_tag": "Adjective",
+      "example": "อากาศหนาว",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "เร็ว",
+      "english": "fast",
+      "romanization": "reo",
+      "pos_tag": "Adjective",
+      "example": "รถเร็ว",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ช้า",
+      "english": "slow",
+      "romanization": "chaa",
+      "pos_tag": "Adjective",
+      "example": "รถช้า",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ใหม่",
+      "english": "new",
+      "romanization": "mai",
+      "pos_tag": "Adjective",
+      "example": "รถใหม่",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "เก่า",
+      "english": "old",
+      "romanization": "kao",
+      "pos_tag": "Adjective",
+      "example": "บ้านเก่า",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "สูง",
+      "english": "tall, high",
+      "romanization": "suung",
+      "pos_tag": "Adjective",
+      "example": "ตึกสูง",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ต่ำ",
+      "english": "low, short",
+      "romanization": "tam",
+      "pos_tag": "Adjective",
+      "example": "เก้าอี้ต่ำ",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "หนึ่ง",
+      "english": "one",
+      "romanization": "nueng",
+      "pos_tag": "Number",
+      "example": "หนึ่งคน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "สอง",
+      "english": "two",
+      "romanization": "song",
+      "pos_tag": "Number",
+      "example": "สองคน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "สาม",
+      "english": "three",
+      "romanization": "saam",
+      "pos_tag": "Number",
+      "example": "สามคน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "สี่",
+      "english": "four",
+      "romanization": "sii",
+      "pos_tag": "Number",
+      "example": "สี่คน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ห้า",
+      "english": "five",
+      "romanization": "haa",
+      "pos_tag": "Number",
+      "example": "ห้าคน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "สิบ",
+      "english": "ten",
+      "romanization": "sip",
+      "pos_tag": "Number",
+      "example": "สิบคน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ร้อย",
+      "english": "hundred",
+      "romanization": "roi",
+      "pos_tag": "Number",
+      "example": "หนึ่งร้อย",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "พัน",
+      "english": "thousand",
+      "romanization": "phan",
+      "pos_tag": "Number",
+      "example": "หนึ่งพัน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "อะไร",
+      "english": "what",
+      "romanization": "arai",
+      "pos_tag": "Question",
+      "example": "นี่อะไร",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ที่ไหน",
+      "english": "where",
+      "romanization": "thii nai",
+      "pos_tag": "Question",
+      "example": "บ้านอยู่ที่ไหน",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "เมื่อไหร่",
+      "english": "when",
+      "romanization": "muea rai",
+      "pos_tag": "Question",
+      "example": "ไปเมื่อไหร่",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ทำไม",
+      "english": "why",
+      "romanization": "tham mai",
+      "pos_tag": "Question",
+      "example": "ทำไมไม่ไป",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ใช่",
+      "english": "yes, correct",
+      "romanization": "chai",
+      "pos_tag": "Interjection",
+      "example": "ใช่แล้ว",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ไม่",
+      "english": "no, not",
+      "romanization": "mai",
+      "pos_tag": "Adverb",
+      "example": "ไม่ใช่",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "ได้",
+      "english": "can, able to",
+      "romanization": "dai",
+      "pos_tag": "Verb",
+      "example": "ทำได้",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "จะ",
+      "english": "will (future marker)",
+      "romanization": "ja",
+      "pos_tag": "Auxiliary",
+      "example": "จะไป",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    },
+    {
+      "thai": "แล้ว",
+      "english": "already, then",
+      "romanization": "laeo",
+      "pos_tag": "Adverb",
+      "example": "ไปแล้ว",
+      "difficulty": "learning",
+      "times_reviewed": 0,
+      "last_reviewed": null
+    }
+  ]
+}
