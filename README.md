@@ -4,12 +4,42 @@ A lightweight toolkit for Thai learners: **sentence breakdown**, **romanization*
 
 ---
 
-## ✨ Modules
-- **Breakdown**: word segmentation, POS, romanization (RTGS), optional English gloss.
-- **Speak**: text-to-speech for sentences/words (gTTS or Edge TTS).
-- **Flashcards**: CSV ↔ review mode, spaced-repetition friendly exports.
-- **Tone Game**: listen → pick the correct tone/word; or see a word → hear 5 tones.
-- **CLI & UI**: use from terminal or Streamlit web app.
+## 🚀 Quick Start
+
+```bash
+# Using uv (recommended)
+uv run streamlit run apps/streamlit_app.py
+
+# Or with pip
+pip install -e .
+streamlit run apps/streamlit_app.py
+```
+
+The app will open in your browser at `http://localhost:8501`
+
+---
+
+## ✨ Features
+
+### 📝 Breakdown Tab
+- **Word segmentation**: Split Thai text into individual words
+- **POS tagging**: Identify parts of speech (nouns, verbs, etc.)
+- **Romanization**: Convert Thai to Roman script (RTGS, Royin, ICU)
+- **Translation**: Get English meanings for words and sentences
+- **Language detection**: Auto-detect and translate English to Thai
+
+### 🔊 Speak Tab
+- **Text-to-speech**: High-quality Thai neural voices (male/female)
+- **Example phrases**: Pre-loaded common phrases with translations
+- **Audio download**: Save generated speech as MP3
+
+### 📚 Flashcards (Coming Soon)
+- CSV import/export for vocabulary review
+- Spaced-repetition friendly exports
+
+### 🎮 Tone Game (Coming Soon)
+- Listen and pick the correct tone/word
+- Practice Thai tones interactively
 
 ---
 
@@ -18,28 +48,65 @@ A lightweight toolkit for Thai learners: **sentence breakdown**, **romanization*
 thai-language-toolkit/
 ├─ src/
 │  └─ tlt/
-│     ├─ __init__.py               # stable public API re-exports
-│     ├─ nlp/                      # text understanding
-│     │  ├─ __init__.py
-│     │  ├─ breakdown.py           # segmentation, POS, gloss
-│     │  └─ romanize.py            # RTGS / (later IPA)
-│     ├─ speech/                   # audio generation + playback utils
-│     │  ├─ __init__.py
-│     │  ├─ gtts_engine.py
-│     │  ├─ edge_engine.py
-│     │  └─ speak.py               # unified speak(text, engine=..)
-│     ├─ study/                    # learning tools & UX
-│     │  ├─ __init__.py
-│     │  ├─ flashcards.py
-│     │  └─ tone_game.py
-│     └─ config.py                 # central config & feature flags
+│     ├─ nlp/                      # NLP processing
+│     │  ├─ breakdown.py           # word segmentation, POS tagging
+│     │  └─ romanize.py            # romanization engines
+│     ├─ speech/                   # text-to-speech
+│     │  ├─ gtts_engine.py         # Google TTS
+│     │  └─ edge_engine.py         # Edge TTS (neural voices)
+│     ├─ data/                     # dictionaries & mappings
+│     │  ├─ thai_dict.py           # Thai-English dictionary
+│     │  ├─ pos_labels.py          # POS tag labels
+│     │  └─ name_transliteration.py
+│     └─ study/                    # learning tools (flashcards, games)
 ├─ apps/
-│  └─ streamlit_app.py               # add “Speak” + “Study” tabs
+│  ├─ streamlit_app.py             # main Streamlit app
+│  └─ tabs/                        # modular tab components
+│     ├─ breakdown_tab.py
+│     ├─ speak_tab.py
+│     ├─ flashcards_tab.py
+│     └─ tone_game_tab.py
 ├─ pyproject.toml
-├─ requirements.txt
-└─ README.md
+└─ requirements.txt
 ```
 
 ---
+
+## 🙏 Acknowledgments
+
+This toolkit is built on excellent open-source projects:
+
+- **[PyThaiNLP](https://github.com/PyThaiNLP/pythainlp)** - Thai NLP library for word segmentation, POS tagging, and romanization
+- **[Edge TTS](https://github.com/rany2/edge-tts)** - High-quality neural text-to-speech voices
+- **[Streamlit](https://streamlit.io/)** - Web app framework
+- **[deep-translator](https://github.com/nidhaloff/deep-translator)** - MyMemory translator for Thai → English translation
+- **[googletrans](https://github.com/ssut/py-googletrans)** - Google Translate for English → Thai translation
+
+Special thanks to the PyThaiNLP team for their comprehensive Thai language processing tools that power the core functionality of this toolkit.
+
+---
+
+## 📚 Citations
+
+If you use this toolkit in your research or project, please cite PyThaiNLP:
+
+> Phatthiyaphaibun et al. "PyThaiNLP: Thai Natural Language Processing in Python". Zenodo, 2 June 2024.
+
+BibTeX:
+```bibtex
+@software{pythainlp,
+    title = "{P}y{T}hai{NLP}: {T}hai Natural Language Processing in {P}ython",
+    author = "Phatthiyaphaibun, Wannaphong and others",
+    doi = {10.5281/zenodo.3519354},
+    url = {https://github.com/PyThaiNLP/pythainlp/},
+    year = {2024}
+}
+```
+
+---
+
+## 📄 License
+
+MIT License - feel free to use this for your Thai learning journey!
 
 
