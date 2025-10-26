@@ -1,6 +1,11 @@
 """Breakdown tab for Thai text analysis."""
 
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
+
 import streamlit as st
+from tlt.data import get_pos_label
 
 
 def render_breakdown_tab(breakdown_engine, romanizer):
@@ -110,7 +115,8 @@ def render_breakdown_tab(breakdown_engine, romanizer):
 
                         # Add POS if available
                         if include_pos and "pos_tags" in breakdown_result:
-                            row["POS"] = breakdown_result["pos_tags"][i][1]
+                            pos_tag = breakdown_result["pos_tags"][i][1]
+                            row["Part of Speech"] = get_pos_label(pos_tag)
 
                         word_data.append(row)
 
