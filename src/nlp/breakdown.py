@@ -21,19 +21,23 @@ class ThaiBreakdown:
 
     def _init_translator(self):
         """Initialize the translator with fallback."""
-        try:
-            # MyMemory for Thai to English (works well)
-            self.translator = MyMemoryTranslator(source='th-TH', target='en-GB')
-        except Exception:
-            self.translator = None
-
-        # Try to import Google Translate, fallback if not available
+        # Try to import Google Translate first (used for both directions)
         try:
             from googletrans import Translator
             self.google_translator = Translator()
+            self.translator = self.google_translator  # Use Google for Thai → English
         except Exception:
-            # Fallback to MyMemory for English to Thai if Google fails
             self.google_translator = None
+            self.translator = None
+
+        # Fallback to MyMemory if Google Translate fails
+        if not self.translator:
+            try:
+                self.translator = MyMemoryTranslator(source='th-TH', target='en-GB')
+            except Exception:
+                self.translator = None
+
+        if not self.google_translator:
             try:
                 self.en_to_th_translator = MyMemoryTranslator(source='en-GB', target='th-TH')
             except Exception:
@@ -86,8 +90,14 @@ class ThaiBreakdown:
         # Fall back to online translator for unknown words
         if self.translator:
             try:
-                translation = self.translator.translate(word)
-                return translation if translation else None
+                # Check if translator is Google Translate (has .translate method with src/dest)
+                if hasattr(self.translator, 'translate') and self.translator == self.google_translator:
+                    result = self.translator.translate(word, src='th', dest='en')
+                    return result.text if result else None
+                else:
+                    # MyMemory translator
+                    translation = self.translator.translate(word)
+                    return translation if translation else None
             except Exception:
                 pass
         return None
@@ -152,7 +162,13 @@ class ThaiBreakdown:
             # Also translate the full sentence
             if self.translator and text.strip():
                 try:
-                    result["full_translation"] = self.translator.translate(text)
+                    # Check if translator is Google Translate
+                    if hasattr(self.translator, 'translate') and self.translator == self.google_translator:
+                        translation_result = self.translator.translate(text, src='th', dest='en')
+                        result["full_translation"] = translation_result.text if translation_result else None
+                    else:
+                        # MyMemory translator
+                        result["full_translation"] = self.translator.translate(text)
                 except Exception:
                     result["full_translation"] = None
             else:

@@ -44,10 +44,12 @@ def render_breakdown_tab(breakdown_engine, romanizer):
             with st.spinner("🔄 Analyzing text..."):
                 # Detect language
                 detected_lang = breakdown_engine.detect_language(input_text)
+                original_english = None  # Track if user entered English
 
                 # If English, translate to Thai first
                 if detected_lang == 'english':
                     st.info("🔄 Detected English text. Translating to Thai...")
+                    original_english = input_text  # Save original English input
                     thai_text = breakdown_engine.translate_to_thai(input_text)
                     if thai_text:
                         st.success(f"📝 Thai translation: {thai_text}")
@@ -86,20 +88,28 @@ def render_breakdown_tab(breakdown_engine, romanizer):
                     # Word segmentation
                     st.markdown("### 🔤 Word Segmentation")
                     words = breakdown_result["words"]
-                    st.write(" | ".join(words))
+                    # Filter out punctuation for display to avoid confusion
+                    words_no_punct = [w for w in words if w.strip() and not all(c in '.,!?;:"""()[]{}' for c in w)]
+                    st.write(" | ".join(words_no_punct))
 
                     # Romanization
                     st.markdown("### 📖 Romanization")
                     romanized_words = romanizer.romanize_words(words, engine=romanization_engine)
-                    st.write(" | ".join(romanized_words))
+                    # Filter out punctuation romanization
+                    romanized_no_punct = [romanizer.romanize_words([w], engine=romanization_engine)[0]
+                                          for w in words if w.strip() and not all(c in '.,!?;:"""()[]{}' for c in w)]
+                    st.write(" | ".join(romanized_no_punct))
 
                     # Full romanization
                     full_romanized = romanizer.romanize(thai_text, engine=romanization_engine)
                     st.info(f"Full text: {full_romanized}")
 
                     # Full translation
-                    if include_translation and "full_translation" in breakdown_result:
-                        if breakdown_result["full_translation"]:
+                    if include_translation:
+                        # If user entered English, show their original input instead of back-translating
+                        if original_english:
+                            st.success(f"📖 English: {original_english}")
+                        elif "full_translation" in breakdown_result and breakdown_result["full_translation"]:
                             st.success(f"📖 English: {breakdown_result['full_translation']}")
 
                     # Word analysis table
