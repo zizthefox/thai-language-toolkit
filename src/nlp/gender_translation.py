@@ -1,7 +1,7 @@
 """Gender-specific translation adjustments for Thai language."""
 
 import re
-from data import GENDER_PHRASES, GENDER_PRONOUNS
+from data import GENDER_PRONOUNS
 
 
 def apply_gender_translation(english_text: str, thai_text: str, gender: str) -> str:
@@ -20,11 +20,6 @@ def apply_gender_translation(english_text: str, thai_text: str, gender: str) -> 
         return thai_text
 
     gender_key = gender.lower()
-
-    # First, check if entire phrase has a direct mapping in corpus
-    english_lower = english_text.lower().strip()
-    if english_lower in GENDER_PHRASES[gender_key]:
-        return GENDER_PHRASES[gender_key][english_lower]
 
     # Apply pronoun replacements using corpus
     pronouns = GENDER_PRONOUNS[gender_key]
@@ -48,11 +43,17 @@ def apply_gender_translation(english_text: str, thai_text: str, gender: str) -> 
         # Replace ผม after spaces when NOT after รัก/ชอบ (which would make it "hair")
         thai_text = re.sub(r'(?<!รัก)(?<!ชอบ)\s+ผม\b', ' ' + pronouns["i"], thai_text)
 
-    # Replace polite particles
-    if gender_key == "male":
-        thai_text = thai_text.replace("ค่ะ", pronouns["polite_particle"])
-        thai_text = thai_text.replace("คะ", pronouns["polite_particle"])
-    else:  # female
-        thai_text = thai_text.replace("ครับ", pronouns["polite_particle"])
+    # Step 4: Add polite particle at end of sentence
+    polite_particle = pronouns["polite_particle"]
+    if polite_particle:  # Only add if not empty (neutral has empty particle)
+        # Check if sentence already ends with a polite particle
+        if not (thai_text.endswith("ครับ") or thai_text.endswith("ค่ะ") or thai_text.endswith("คะ")):
+            # Check if it's a question (ends with ไหม, หรือ, or has ?)
+            if thai_text.endswith("ไหม") or thai_text.endswith("หรือ") or "?" in thai_text:
+                # For questions, add question particle
+                thai_text = thai_text.rstrip("?").strip() + pronouns["polite_question"]
+            else:
+                # For statements, add polite particle
+                thai_text = thai_text.strip() + polite_particle
 
     return thai_text

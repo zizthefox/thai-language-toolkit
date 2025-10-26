@@ -11,6 +11,10 @@ sys.path.insert(0, str(root_path))
 import streamlit as st
 from data import get_pos_label
 from nlp import apply_gender_translation
+from study import Flashcard, FlashcardDeck
+
+# Path for saving flashcards
+FLASHCARD_FILE = root_path / "data" / "flashcards.json"
 
 
 def render_breakdown_tab(breakdown_engine, romanizer):
@@ -151,5 +155,47 @@ def render_breakdown_tab(breakdown_engine, romanizer):
 
                     if word_data:
                         st.dataframe(word_data, width='stretch')
+
+                        # Add "Save to Flashcards" button
+                        st.markdown("---")
+                        st.markdown("### 💾 Save to Flashcards")
+
+                        # Allow user to select which words to save
+                        st.caption("Select words to add to your flashcard deck:")
+
+                        # Load existing deck
+                        flashcard_deck = FlashcardDeck.load_from_file(FLASHCARD_FILE)
+
+                        # Create checkboxes for each word
+                        selected_words = []
+                        cols = st.columns(3)
+                        for idx, row in enumerate(word_data):
+                            # Skip punctuation
+                            if row["Thai"].strip() and not all(c in '.,!?;:"""()[]{}' for c in row["Thai"]):
+                                with cols[idx % 3]:
+                                    if st.checkbox(row["Thai"], key=f"save_word_{idx}"):
+                                        selected_words.append(row)
+
+                        if selected_words:
+                            if st.button("💾 Save Selected Words to Flashcards", type="primary"):
+                                added_count = 0
+                                for word_row in selected_words:
+                                    card = Flashcard(
+                                        thai=word_row["Thai"],
+                                        romanization=word_row["Romanized"],
+                                        english=word_row.get("English", ""),
+                                        pos_tag=word_row.get("Part of Speech", ""),
+                                        example=thai_text if thai_text else "",
+                                    )
+
+                                    if flashcard_deck.add_card(card):
+                                        added_count += 1
+
+                                if added_count > 0:
+                                    flashcard_deck.save_to_file(FLASHCARD_FILE)
+                                    st.success(f"✅ Added {added_count} word(s) to flashcards!")
+                                else:
+                                    st.info("All selected words already exist in your flashcard deck.")
+
         else:
             st.warning("Please enter some text to analyze")
