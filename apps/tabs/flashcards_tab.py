@@ -148,42 +148,48 @@ def render_flashcards_tab():
                     st.session_state[answer_key] = ""
 
                 user_answer = st.text_input(
-                    "Type the English meaning:",
+                    "Type your answer below:",
                     key=answer_key,
-                    placeholder="e.g., hello, thank you, etc."
                 )
 
-                col1, col2 = st.columns(2)
+                if st.button("Check Answer", type="primary", use_container_width=True):
+                    if user_answer.strip():
+                        # Check if answer is correct (case-insensitive, word boundary match)
+                        correct_answer = current_card.english.lower()
+                        user_input = user_answer.lower().strip()
 
-                with col1:
-                    if st.button("✅ Check Answer", type="primary", use_container_width=True):
-                        if user_answer.strip():
-                            # Check if answer is correct (case-insensitive, partial match)
-                            correct_answer = current_card.english.lower()
-                            user_input = user_answer.lower().strip()
+                        # Split correct answer by common separators
+                        correct_options = [w.strip() for w in correct_answer.replace('/', ',').replace(';', ',').split(',')]
 
-                            # Check exact match or if the input is contained in the answer or vice versa
-                            if (user_input == correct_answer or
-                                user_input in correct_answer or
-                                correct_answer in user_input):
-                                st.success("✅ Correct!")
-                            else:
-                                st.error(f"❌ Not quite. The answer is: **{current_card.english}**")
+                        # Check if user input matches any complete word in any of the options
+                        is_correct = False
+
+                        # First check exact match with any option
+                        if user_input in correct_options:
+                            is_correct = True
                         else:
-                            st.warning("Please enter an answer first!")
+                            # Check if user input is a complete word in any option
+                            import re
+                            for option in correct_options:
+                                # Use word boundary to match complete words only
+                                pattern = r'\b' + re.escape(user_input) + r'\b'
+                                if re.search(pattern, option):
+                                    is_correct = True
+                                    break
 
-                with col2:
-                    if st.button("🔄 Show Answer", type="secondary", use_container_width=True):
+                        if is_correct:
+                            st.success(f"✅ Correct! Answer is: **{current_card.english}**")
+                        else:
+                            st.error(f"❌ Not quite. The answer is: **{current_card.english}**")
+
+                        # Show additional details after checking
                         st.session_state.show_answer = True
-                        st.rerun()
+                    else:
+                        st.warning("Please enter an answer first!")
 
-                # Show full answer details when revealed
+                # Show full answer details after checking
                 if st.session_state.show_answer:
                     st.markdown("---")
-                    st.markdown("### 📖 Full Answer")
-                    st.markdown(f"<h2 style='text-align: center; font-size: 2em;'>{current_card.english}</h2>",
-                               unsafe_allow_html=True)
-
                     if current_card.pos_tag:
                         st.caption(f"Part of Speech: {current_card.pos_tag}")
 
