@@ -11,6 +11,8 @@ sys.path.insert(0, str(root_path))
 import streamlit as st
 import json
 import random
+import asyncio
+import edge_tts
 from study import Flashcard, FlashcardDeck
 
 # Path for saving flashcards
@@ -18,9 +20,19 @@ FLASHCARD_FILE = root_path / "data" / "flashcards.json"
 EXAMPLE_FLASHCARDS_FILE = root_path / "data" / "example_flashcards.json"
 
 
+async def generate_audio(text: str, voice: str = "th-TH-PremwadeeNeural") -> bytes:
+    """Generate audio using Edge TTS."""
+    communicate = edge_tts.Communicate(text, voice)
+    audio_data = b""
+    async for chunk in communicate.stream():
+        if chunk["type"] == "audio":
+            audio_data += chunk["data"]
+    return audio_data
+
+
 def render_flashcards_tab():
     """Render the flashcards tab."""
-    st.header("📚 Flashcards")
+    st.header("Flashcards")
     st.markdown("Review Thai vocabulary with interactive flashcards")
 
     # Initialize session state for deck
@@ -118,14 +130,57 @@ def render_flashcards_tab():
                 st.markdown(f"<p style='text-align: center; font-size: 1.2em; color: #888; margin-top: 5px;'>({current_card.romanization})</p>",
                            unsafe_allow_html=True)
 
-                # Show answer button
-                if not st.session_state.show_answer:
-                    if st.button("🔄 Show Answer", type="primary", use_container_width=True):
+                # Audio playback button
+                col_audio, col_space = st.columns([1, 4])
+                with col_audio:
+                    if st.button("🔊 Play", use_container_width=True):
+                        with st.spinner("Generating audio..."):
+                            audio_data = asyncio.run(generate_audio(current_card.thai))
+                            st.audio(audio_data, format="audio/mp3")
+
+                # User input for answer
+                st.markdown("---")
+                st.markdown("### ✍️ Your Answer")
+
+                # Initialize answer input in session state
+                answer_key = f"answer_{st.session_state.current_card_index}"
+                if answer_key not in st.session_state:
+                    st.session_state[answer_key] = ""
+
+                user_answer = st.text_input(
+                    "Type the English meaning:",
+                    key=answer_key,
+                    placeholder="e.g., hello, thank you, etc."
+                )
+
+                col1, col2 = st.columns(2)
+
+                with col1:
+                    if st.button("✅ Check Answer", type="primary", use_container_width=True):
+                        if user_answer.strip():
+                            # Check if answer is correct (case-insensitive, partial match)
+                            correct_answer = current_card.english.lower()
+                            user_input = user_answer.lower().strip()
+
+                            # Check exact match or if the input is contained in the answer or vice versa
+                            if (user_input == correct_answer or
+                                user_input in correct_answer or
+                                correct_answer in user_input):
+                                st.success("✅ Correct!")
+                            else:
+                                st.error(f"❌ Not quite. The answer is: **{current_card.english}**")
+                        else:
+                            st.warning("Please enter an answer first!")
+
+                with col2:
+                    if st.button("🔄 Show Answer", type="secondary", use_container_width=True):
                         st.session_state.show_answer = True
                         st.rerun()
-                else:
-                    # Back of card (English)
+
+                # Show full answer details when revealed
+                if st.session_state.show_answer:
                     st.markdown("---")
+                    st.markdown("### 📖 Full Answer")
                     st.markdown(f"<h2 style='text-align: center; font-size: 2em;'>{current_card.english}</h2>",
                                unsafe_allow_html=True)
 
@@ -135,14 +190,14 @@ def render_flashcards_tab():
                     if current_card.example:
                         st.info(f"Example: {current_card.example}")
 
-                    # Next card button
-                    st.markdown("---")
-                    if st.button("➡️ Next Card", type="primary", use_container_width=True):
-                        st.session_state.show_answer = False
-                        st.session_state.current_card_index = (
-                            st.session_state.current_card_index + 1
-                        ) % len(study_cards)
-                        st.rerun()
+                # Next card button (always show)
+                st.markdown("---")
+                if st.button("➡️ Next Card", type="primary", use_container_width=True):
+                    st.session_state.show_answer = False
+                    st.session_state.current_card_index = (
+                        st.session_state.current_card_index + 1
+                    ) % len(study_cards)
+                    st.rerun()
 
     # ============ ADD CARDS TAB ============
     with tab2:
