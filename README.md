@@ -1,117 +1,72 @@
 # Thai Language Toolkit
 
-A lightweight toolkit for Thai learners: **sentence breakdown**, **romanization**, **pronunciation (TTS)**, **flashcards**, and a simple **tone game**.
+Practice Thai conversation with AI-powered scenarios. Get real-time corrections, hear native pronunciation, and build confidence speaking Thai.
 
----
+## Features
 
-## 🚀 Quick Start
+- **Conversation Practice**: Practice real-world scenarios (restaurant, market, taxi, cafe)
+- **Thai + Romanization + English**: Every response shows all three formats
+- **Text-to-Speech**: Hear natural Thai pronunciation with native Thai voices (Edge TTS - free!)
+- **Real-time Corrections**: Get gentle feedback on your Thai mistakes
+- **Suggested Responses**: Learn what to say next (with romanization!)
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- OpenAI API key
+
+### Installation
 
 ```bash
-# Using uv (recommended)
-uv run streamlit run apps/streamlit_app.py
+# Install dependencies
+npm install
 
-# Or with pip
-pip install -e .
-streamlit run apps/streamlit_app.py
+# Copy environment variables
+cp .env.example .env.local
+
+# Add your API key to .env.local
 ```
 
-The app will open in your browser at `http://localhost:8501`
+### Environment Variables
 
----
+```env
+OPENAI_API_KEY=sk-your-openai-api-key
+```
 
-## ✨ Features
+### Development
 
-### 📝 Breakdown Tab
-- **Word segmentation**: Split Thai text into individual words
-- **POS tagging**: Identify parts of speech (nouns, verbs, etc.) with human-readable labels
-- **Romanization**: Convert Thai to Roman script using PyThaiNLP (thai2rom)
-- **Translation**: Get English meanings for words and sentences
-- **Language detection**: Auto-detect and translate English to Thai
-- **Gender-specific pronouns**: Select speaker gender for accurate Thai pronoun usage (ผม/ฉัน, ครับ/ค่ะ)
-
-### 🔊 Speak Tab
-- **Text-to-speech**: High-quality Thai neural voices (male/female)
-- **Example phrases**: Pre-loaded common phrases with translations
-- **Audio download**: Save generated speech as MP3
-
-### 📚 Flashcards
-- **Interactive flip-cards**: Thai → show answer → Romanization + English
-- **Manual card creation**: Add Thai words with romanization, English, POS tags, examples
-- **CSV import/export**: Import vocabulary lists or export for Anki/other SRS apps
-- **Deck management**: View stats, browse all cards, delete cards
-- **Coming soon**: Auto-save words from Breakdown Tab, self-grading system
-
-### 🎮 Tone Game (Coming Soon)
-- Listen and pick the correct tone/word
-- Practice Thai tones interactively
-
----
-
-## 🧩 Project Structure
 ```bash
-thai-language-toolkit/
-├─ src/
-│  ├─ nlp/                         # NLP processing
-│  │  ├─ breakdown.py              # word segmentation, POS tagging
-│  │  ├─ romanize.py               # romanization engines
-│  │  └─ gender_translation.py     # gender-specific pronoun adjustments
-│  ├─ speech/                      # text-to-speech
-│  │  ├─ gtts_engine.py            # Google TTS
-│  │  └─ edge_engine.py            # Edge TTS (neural voices)
-│  └─ study/                       # learning tools (flashcards, games)
-├─ data/                           # dictionaries & mappings
-│  ├─ thai_dict.py                 # Thai-English dictionary
-│  ├─ pos_labels.py                # POS tag labels
-│  ├─ gender_pronouns.py           # gender pronoun corpus
-│  └─ name_transliteration.py     # name transliteration
-├─ apps/
-│  ├─ streamlit_app.py             # main Streamlit app
-│  └─ tabs/                        # modular tab components
-│     ├─ breakdown_tab.py
-│     ├─ speak_tab.py
-│     ├─ flashcards_tab.py
-│     └─ tone_game_tab.py
-├─ pyproject.toml
-└─ requirements.txt
+npm run dev
 ```
 
----
+Open [http://localhost:3000](http://localhost:3000) to start practicing!
 
-## 🙏 Acknowledgments
+### Production Build
 
-This toolkit is built on excellent open-source projects:
-
-- **[PyThaiNLP](https://github.com/PyThaiNLP/pythainlp)** - Thai NLP library for word segmentation, POS tagging, and romanization
-- **[Edge TTS](https://github.com/rany2/edge-tts)** - High-quality neural text-to-speech voices
-- **[Streamlit](https://streamlit.io/)** - Web app framework
-- **[googletrans](https://github.com/ssut/py-googletrans)** - Google Translate for bidirectional Thai ↔ English translation
-- **[deep-translator](https://github.com/nidhaloff/deep-translator)** - MyMemory translator as fallback
-
-Special thanks to the PyThaiNLP team for their comprehensive Thai language processing tools that power the core functionality of this toolkit.
-
----
-
-## 📚 Citations
-
-If you use this toolkit in your research or project, please cite PyThaiNLP:
-
-> Phatthiyaphaibun et al. "PyThaiNLP: Thai Natural Language Processing in Python". Zenodo, 2 June 2024.
-
-BibTeX:
-```bibtex
-@software{pythainlp,
-    title = "{P}y{T}hai{NLP}: {T}hai Natural Language Processing in {P}ython",
-    author = "Phatthiyaphaibun, Wannaphong and others",
-    doi = {10.5281/zenodo.3519354},
-    url = {https://github.com/PyThaiNLP/pythainlp/},
-    year = {2024}
-}
+```bash
+npm run build
+npm start
 ```
 
----
+## Deploy to Vercel
 
-## 📄 License
+1. Push to GitHub
+2. Import to Vercel
+3. Add `OPENAI_API_KEY` environment variable in Vercel dashboard
+4. Deploy!
 
-MIT License - feel free to use this for your Thai learning journey!
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
 
+## Tech Stack
 
+- **Next.js 16** - React framework
+- **Tailwind CSS** - Styling
+- **OpenAI GPT-4o-mini** - Conversation AI
+- **Edge TTS** - Native Thai voices (Premwadee, Achara, Niwat) - free!
+- **Vercel AI SDK** - Streaming responses
+
+## License
+
+MIT

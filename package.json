@@ -1,0 +1,32 @@
+{
+  "name": "thai-language-toolkit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Practice Thai conversation with AI-powered scenarios",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^3.0.1",
+    "ai": "^6.0.3",
+    "next": "16.1.1",
+    "node-edge-tts": "^1.2.8",
+    "openai": "^6.15.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/ws": "^8.18.1",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
