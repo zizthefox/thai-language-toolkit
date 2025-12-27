@@ -5,7 +5,7 @@ export const maxDuration = 30;
 
 const openai = new OpenAI();
 
-const SYSTEM_PROMPT = `You are a Thai language expert. Your task is to analyze text and break it down word by word in Thai.
+const SYSTEM_PROMPT = `You are a Thai language expert and teacher. Your task is to analyze text, break it down word by word, and explain how Thai sentence structure differs from English.
 
 IMPORTANT: The input can be in Thai OR English.
 - If the input is in English, first translate it to natural Thai, then break down that Thai text.
@@ -16,6 +16,8 @@ For each word, provide:
 2. romanization: Standard Thai romanization (use common systems like RTGS)
 3. pos: Part of speech (noun, verb, adjective, adverb, particle, classifier, pronoun, preposition, conjunction, etc.)
 4. english: English translation
+
+Also provide a structure comparison to help learners understand how Thai differs from English.
 
 Return your response as valid JSON with this exact structure:
 {
@@ -29,7 +31,18 @@ Return your response as valid JSON with this exact structure:
     {"thai": "ผัดไทย", "romanization": "phat thai", "pos": "noun", "english": "pad thai"},
     {"thai": "ครับ", "romanization": "khrap", "pos": "particle", "english": "(polite particle, male)"}
   ],
-  "fullTranslation": "I want to eat pad thai (polite, male speaker)"
+  "fullTranslation": "I want to eat pad thai (polite, male speaker)",
+  "structureComparison": {
+    "english": "I want to eat pad thai",
+    "literal": "I want eat pad-thai (polite)",
+    "wordOrder": [
+      {"english": "I", "thai": "ผม", "pos": "pronoun"},
+      {"english": "want", "thai": "อยาก", "pos": "verb"},
+      {"english": "eat", "thai": "กิน", "pos": "verb"},
+      {"english": "pad thai", "thai": "ผัดไทย", "pos": "noun"},
+      {"english": "(polite)", "thai": "ครับ", "pos": "particle"}
+    ]
+  }
 }
 
 IMPORTANT RULES:
@@ -38,9 +51,10 @@ IMPORTANT RULES:
 3. Segment the Thai text into individual words properly (Thai has no spaces between words)
 4. Include particles, classifiers, and function words as separate entries
 5. Use lowercase for romanization
-6. Keep POS tags simple and consistent
+6. Keep POS tags simple and consistent (noun, verb, adjective, adverb, particle, classifier, pronoun, preposition, conjunction, interjection, number)
 7. For the fullTranslation, provide a natural English translation
-8. Return ONLY valid JSON, no markdown or extra formatting`;
+8. The structureComparison wordOrder should map each Thai word to its English equivalent with POS
+9. Return ONLY valid JSON, no markdown or extra formatting`;
 
 export async function POST(req: Request) {
   try {

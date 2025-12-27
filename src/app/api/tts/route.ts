@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { EdgeTTS } from "node-edge-tts";
-import { writeFile, readFile, unlink } from "fs/promises";
+import { readFile, unlink } from "fs/promises";
 import { join } from "path";
 import { tmpdir } from "os";
 import { randomUUID } from "crypto";
 
-// Thai voices available in Edge TTS (same as Streamlit app!)
+export const maxDuration = 30;
+
+// Thai voices available in Edge TTS
 const THAI_VOICES = {
-  female1: "th-TH-PremwadeeNeural",
-  female2: "th-TH-AcharaNeural",
+  female: "th-TH-PremwadeeNeural",
   male: "th-TH-NiwatNeural",
 };
 
@@ -36,7 +37,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Text is required" }, { status: 400 });
     }
 
-    const selectedVoice = THAI_VOICES[voice as keyof typeof THAI_VOICES] || THAI_VOICES.female1;
+    const selectedVoice = THAI_VOICES[voice as keyof typeof THAI_VOICES] || THAI_VOICES.female;
 
     // Add natural pauses for learner-friendly speech
     const processedText = addNaturalPauses(text);

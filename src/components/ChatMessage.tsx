@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import Image from "next/image";
 import { ParsedResponse } from "@/lib/types";
 
 interface ChatMessageProps {
@@ -9,6 +9,7 @@ interface ChatMessageProps {
   parsed?: ParsedResponse;
   onSpeak?: (text: string) => void;
   isPlaying?: boolean;
+  avatar?: string;
 }
 
 export function ChatMessage({
@@ -17,6 +18,7 @@ export function ChatMessage({
   parsed,
   onSpeak,
   isPlaying,
+  avatar,
 }: ChatMessageProps) {
   const isUser = role === "user";
 
@@ -48,7 +50,18 @@ export function ChatMessage({
   if (displayParsed) {
     return (
       <div className="flex justify-start mb-4">
-        <div className="bg-gray-100 dark:bg-zinc-800 rounded-2xl rounded-bl-md px-4 py-3 max-w-[85%] space-y-2">
+        <div className="flex items-start gap-3">
+          {avatar && (
+            <div className="relative w-20 h-20 rounded-2xl overflow-hidden border-2 border-amber-400 flex-shrink-0 shadow-lg">
+              <Image
+                src={avatar}
+                alt="Character"
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
+          <div className="bg-white/95 dark:bg-zinc-800/95 backdrop-blur rounded-2xl rounded-tl-md px-4 py-3 max-w-[75%] space-y-2">
           {/* Thai text with speaker button */}
           <div className="flex items-start gap-2">
             <p className="text-2xl font-medium text-gray-900 dark:text-white">
@@ -114,6 +127,7 @@ export function ChatMessage({
               </div>
             </div>
           )}
+          </div>
         </div>
       </div>
     );
@@ -122,10 +136,22 @@ export function ChatMessage({
   // Plain text fallback
   return (
     <div className="flex justify-start mb-4">
-      <div className="bg-gray-100 dark:bg-zinc-800 rounded-2xl rounded-bl-md px-4 py-2 max-w-[80%]">
-        <p className="text-gray-900 dark:text-white whitespace-pre-wrap">
-          {content}
-        </p>
+      <div className="flex items-start gap-3">
+        {avatar && (
+          <div className="relative w-20 h-20 rounded-2xl overflow-hidden border-2 border-amber-400 flex-shrink-0 shadow-lg">
+            <Image
+              src={avatar}
+              alt="Character"
+              fill
+              className="object-cover"
+            />
+          </div>
+        )}
+        <div className="bg-white/95 dark:bg-zinc-800/95 backdrop-blur rounded-2xl rounded-tl-md px-4 py-2 max-w-[75%]">
+          <p className="text-gray-900 dark:text-white whitespace-pre-wrap">
+            {content}
+          </p>
+        </div>
       </div>
     </div>
   );

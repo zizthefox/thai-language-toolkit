@@ -1,156 +1,242 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-zinc-900 dark:to-zinc-800">
-      <main className="max-w-4xl mx-auto px-4 py-16">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            Thai Language Toolkit
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-white to-orange-50 dark:from-zinc-900 dark:via-zinc-900 dark:to-zinc-800">
+      {/* Decorative Thai pattern bar */}
+      <div className="h-2 bg-gradient-to-r from-red-700 via-amber-500 to-red-700" />
+
+      <main className="max-w-4xl mx-auto px-4 py-12">
+        {/* Banner Image */}
+        <div className="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-8">
+          <Image
+            src="/images/banner.jpg"
+            alt="Thai Language Classroom"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+        </div>
+
+        {/* Welcome Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-amber-900 dark:text-amber-100 mb-2">
+            สวัสดีค่ะ
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
-            Practice Thai conversation with AI-powered scenarios
+          <p className="text-lg text-amber-700 dark:text-amber-300 italic mb-4">
+            sawatdi kha — Welcome!
           </p>
+          <div className="max-w-xl mx-auto">
+            <p className="text-gray-600 dark:text-gray-400">
+              Welcome to your Thai classroom. Learn to speak Thai through
+              real conversations and practical lessons.
+            </p>
+          </div>
         </div>
 
-        {/* Feature Cards */}
-        <div className="grid md:grid-cols-2 gap-6 mb-16">
-          {/* Conversation Practice */}
-          <Link
-            href="/chat"
-            className="group p-6 bg-white dark:bg-zinc-800 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-200 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-500"
-          >
-            <div className="text-4xl mb-4">🗣️</div>
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-              Conversation Practice
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Practice real-world scenarios like ordering food, shopping at
-              markets, or taking a taxi. Get corrections and suggestions in
-              real-time.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-sm">
-                Restaurant
-              </span>
-              <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-sm">
-                Market
-              </span>
-              <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-sm">
-                Taxi
-              </span>
-              <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-sm">
-                Cafe
-              </span>
-            </div>
-          </Link>
-
-          {/* Pronunciation Practice - Coming Soon */}
-          <div className="p-6 bg-white dark:bg-zinc-800 rounded-2xl shadow-lg border border-gray-200 dark:border-zinc-700 opacity-75">
-            <div className="text-4xl mb-4">🎤</div>
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
-              Pronunciation Practice
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Record yourself speaking Thai and get feedback on your
-              pronunciation. Compare with native speakers and improve your
-              tones.
-            </p>
-            <span className="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 rounded-full text-sm">
-              Coming Soon
-            </span>
-          </div>
-
-          {/* Flashcards - Link to Streamlit */}
-          <div className="p-6 bg-white dark:bg-zinc-800 rounded-2xl shadow-lg border border-gray-200 dark:border-zinc-700">
-            <div className="text-4xl mb-4">📚</div>
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
-              Flashcards
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Study vocabulary with flashcards. Import/export decks, track your
-              progress, and master the 100 most common Thai words.
-            </p>
-            <span className="px-3 py-1 bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300 rounded-full text-sm">
-              Available in Streamlit App
-            </span>
-          </div>
-
-          {/* Text Breakdown */}
-          <Link
-            href="/breakdown"
-            className="group p-6 bg-white dark:bg-zinc-800 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-200 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-500"
-          >
-            <div className="text-4xl mb-4">📝</div>
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-              Text Breakdown
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Analyze Thai text with word segmentation, romanization, POS
-              tagging, and translation. Powered by GPT.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-sm">
-                Word Segmentation
-              </span>
-              <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-sm">
-                POS Tagging
-              </span>
-            </div>
-          </Link>
+        {/* Decorative divider */}
+        <div className="flex items-center justify-center gap-4 mb-12">
+          <div className="h-px w-16 bg-gradient-to-r from-transparent to-amber-400" />
+          <span className="text-amber-500">✦</span>
+          <div className="h-px w-16 bg-gradient-to-l from-transparent to-amber-400" />
         </div>
 
-        {/* Features list */}
-        <div className="bg-white dark:bg-zinc-800 rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-zinc-700">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-            What makes this special
+        {/* Classroom Section */}
+        <div className="mb-8">
+          <h2 className="text-sm font-semibold text-amber-800 dark:text-amber-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <span className="text-lg">📚</span>
+            Your Lessons
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Conversation Practice */}
+            <Link
+              href="/chat"
+              className="group relative p-6 bg-white dark:bg-zinc-800 rounded-2xl shadow-md hover:shadow-xl transition-all border-2 border-amber-200 dark:border-amber-900 hover:border-amber-400 dark:hover:border-amber-600 overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-100 dark:from-amber-900/30 to-transparent rounded-bl-full" />
+              <div className="relative">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-3xl">🗣️</span>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">
+                      Conversation Practice
+                    </h3>
+                    <p className="text-sm text-amber-600 dark:text-amber-500">
+                      ฝึกพูดภาษาไทย
+                    </p>
+                  </div>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                  Practice real-world scenarios like ordering food, shopping, or
+                  taking a taxi. Speak or type — get corrections in real-time.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded text-xs">
+                    🍜 Restaurant
+                  </span>
+                  <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs">
+                    🏮 Night Market
+                  </span>
+                  <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs">
+                    🚕 Taxi
+                  </span>
+                </div>
+              </div>
+            </Link>
+
+            {/* Text Breakdown */}
+            <Link
+              href="/breakdown"
+              className="group relative p-6 bg-white dark:bg-zinc-800 rounded-2xl shadow-md hover:shadow-xl transition-all border-2 border-amber-200 dark:border-amber-900 hover:border-amber-400 dark:hover:border-amber-600 overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-100 dark:from-amber-900/30 to-transparent rounded-bl-full" />
+              <div className="relative">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-3xl">📝</span>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">
+                      Text Breakdown
+                    </h3>
+                    <p className="text-sm text-amber-600 dark:text-amber-500">
+                      วิเคราะห์ประโยค
+                    </p>
+                  </div>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                  Type any sentence in English or Thai. See how it breaks down
+                  word-by-word with pronunciation and grammar.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs">
+                    Word Segmentation
+                  </span>
+                  <span className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded text-xs">
+                    Sentence Structure
+                  </span>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+
+        {/* Coming Soon Section */}
+        <div className="mb-12">
+          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <span className="text-lg">🔜</span>
+            Coming Soon
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Pronunciation Practice */}
+            <div className="p-6 bg-gray-50 dark:bg-zinc-800/50 rounded-2xl border-2 border-dashed border-gray-300 dark:border-zinc-700 opacity-75">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-3xl grayscale">🎤</span>
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-500 dark:text-gray-400">
+                    Pronunciation Practice
+                  </h3>
+                  <p className="text-sm text-gray-400 dark:text-gray-500">
+                    ฝึกออกเสียง
+                  </p>
+                </div>
+              </div>
+              <p className="text-gray-500 dark:text-gray-500 text-sm">
+                Record yourself and compare with native speakers. Master the 5
+                Thai tones.
+              </p>
+            </div>
+
+            {/* Flashcards */}
+            <div className="p-6 bg-gray-50 dark:bg-zinc-800/50 rounded-2xl border-2 border-dashed border-gray-300 dark:border-zinc-700 opacity-75">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-3xl grayscale">🃏</span>
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-500 dark:text-gray-400">
+                    Flashcards
+                  </h3>
+                  <p className="text-sm text-gray-400 dark:text-gray-500">
+                    บัตรคำศัพท์
+                  </p>
+                </div>
+              </div>
+              <p className="text-gray-500 dark:text-gray-500 text-sm">
+                Study vocabulary with spaced repetition. Master the most common
+                Thai words.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* What You'll Learn */}
+        <div className="bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl p-8 border border-amber-200 dark:border-amber-800">
+          <h3 className="text-lg font-semibold text-amber-900 dark:text-amber-100 mb-4 flex items-center gap-2">
+            <span>🎓</span>
+            What You&apos;ll Learn
           </h3>
-          <ul className="space-y-3 text-gray-600 dark:text-gray-400">
-            <li className="flex items-start gap-3">
-              <span className="text-green-500">✓</span>
-              <span>
-                <strong className="text-gray-900 dark:text-white">
-                  Thai + Romanization + English
-                </strong>{" "}
-                - Every response includes all three formats
-              </span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-green-500">✓</span>
-              <span>
-                <strong className="text-gray-900 dark:text-white">
-                  Real-time corrections
-                </strong>{" "}
-                - Get gentle feedback on your Thai mistakes
-              </span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-green-500">✓</span>
-              <span>
-                <strong className="text-gray-900 dark:text-white">
-                  Text-to-speech
-                </strong>{" "}
-                - Hear how native speakers would say each phrase
-              </span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-green-500">✓</span>
-              <span>
-                <strong className="text-gray-900 dark:text-white">
-                  Practical scenarios
-                </strong>{" "}
-                - Practice situations you'll actually encounter in Thailand
-              </span>
-            </li>
-          </ul>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="flex items-start gap-3">
+              <span className="text-amber-600 dark:text-amber-400 mt-1">✦</span>
+              <div>
+                <p className="font-medium text-gray-900 dark:text-white">
+                  Speak naturally
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Learn how Thai people actually talk
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="text-amber-600 dark:text-amber-400 mt-1">✦</span>
+              <div>
+                <p className="font-medium text-gray-900 dark:text-white">
+                  Hear pronunciation
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Native Thai voices for every phrase
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="text-amber-600 dark:text-amber-400 mt-1">✦</span>
+              <div>
+                <p className="font-medium text-gray-900 dark:text-white">
+                  Understand structure
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  See how Thai sentences are built
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="text-amber-600 dark:text-amber-400 mt-1">✦</span>
+              <div>
+                <p className="font-medium text-gray-900 dark:text-white">
+                  Get corrections
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Gentle feedback on your mistakes
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Footer */}
-        <footer className="mt-16 text-center text-gray-500 dark:text-gray-400 text-sm">
-          <p>Built with Next.js, OpenAI, and ElevenLabs</p>
+        <footer className="mt-12 text-center">
+          <p className="text-amber-700 dark:text-amber-400 font-medium mb-1">
+            ขอให้โชคดี — Good luck!
+          </p>
+          <p className="text-gray-400 dark:text-gray-500 text-xs">
+            Built with Next.js & OpenAI
+          </p>
         </footer>
       </main>
+
+      {/* Bottom decorative bar */}
+      <div className="h-2 bg-gradient-to-r from-red-700 via-amber-500 to-red-700" />
     </div>
   );
 }

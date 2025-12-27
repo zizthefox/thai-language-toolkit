@@ -10,12 +10,25 @@ interface WordBreakdown {
   english: string;
 }
 
+interface WordOrderItem {
+  english: string;
+  thai: string;
+  pos: string;
+}
+
+interface StructureComparison {
+  english: string;
+  literal: string;
+  wordOrder: WordOrderItem[];
+}
+
 interface BreakdownResult {
   words: WordBreakdown[];
   fullTranslation: string;
   inputWasThai?: boolean;
   thaiSentence?: string;
   sentenceRomanization?: string;
+  structureComparison?: StructureComparison;
 }
 
 const POS_COLORS: Record<string, string> = {
@@ -320,6 +333,65 @@ export default function BreakdownPage() {
                 </table>
               </div>
             </div>
+
+            {/* Structure Comparison */}
+            {result.structureComparison && (
+              <div className="space-y-4">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  Thai vs English Structure
+                </h2>
+
+                {/* Side by side comparison */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+                    <p className="text-xs font-medium text-blue-600 dark:text-blue-400 mb-2">
+                      English
+                    </p>
+                    <p className="text-gray-900 dark:text-white">
+                      {result.structureComparison.english}
+                    </p>
+                  </div>
+                  <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl">
+                    <p className="text-xs font-medium text-green-600 dark:text-green-400 mb-2">
+                      Thai (literal)
+                    </p>
+                    <p className="text-gray-900 dark:text-white">
+                      {result.structureComparison.literal}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Word order mapping with POS colors */}
+                <div className="p-4 bg-gray-50 dark:bg-zinc-800 rounded-xl border border-gray-200 dark:border-zinc-700">
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Thai Sentence Structure
+                  </p>
+                  <p className="text-center text-sm font-mono text-gray-600 dark:text-gray-400 mb-4">
+                    {result.structureComparison.wordOrder
+                      .map((item) => item.pos.charAt(0).toUpperCase() + item.pos.slice(1))
+                      .join(" + ")}
+                  </p>
+                  <div className="flex flex-wrap gap-2 justify-center items-end">
+                    {result.structureComparison.wordOrder.map((item, index) => (
+                      <div
+                        key={index}
+                        className={`flex flex-col items-center p-3 rounded-lg border-2 min-w-[80px] ${getPosColor(item.pos).replace('text-', 'border-').split(' ')[0]} ${getPosColor(item.pos)}`}
+                      >
+                        <span className="text-lg font-medium text-gray-900 dark:text-white">
+                          {item.thai}
+                        </span>
+                        <span className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                          {item.english}
+                        </span>
+                        <span className="text-[10px] font-medium mt-1 opacity-75">
+                          {item.pos}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* POS Legend */}
             <div className="p-4 bg-gray-50 dark:bg-zinc-800 rounded-xl border border-gray-200 dark:border-zinc-700">
