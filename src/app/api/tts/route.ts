@@ -12,6 +12,20 @@ const THAI_VOICES = {
   male: "th-TH-NiwatNeural",
 };
 
+// Add natural pauses for Thai speech
+function addNaturalPauses(text: string): string {
+  // Add pauses after common Thai sentence endings and punctuation
+  let processed = text
+    // Add pause after polite particles (common sentence endings)
+    .replace(/(ค่ะ|ครับ|คะ|นะคะ|นะครับ)(\s|$)/g, "$1 ... $2")
+    // Add pause after Thai question marks and exclamation
+    .replace(/([?!？！])/g, "$1 ... ")
+    // Add pause after Thai period-equivalents (spaces often act as breaks)
+    .replace(/(\s{2,})/g, " ... ");
+
+  return processed;
+}
+
 export async function POST(req: NextRequest) {
   const tempFile = join(tmpdir(), `tts-${randomUUID()}.mp3`);
 
@@ -24,16 +38,19 @@ export async function POST(req: NextRequest) {
 
     const selectedVoice = THAI_VOICES[voice as keyof typeof THAI_VOICES] || THAI_VOICES.female1;
 
+    // Add natural pauses for learner-friendly speech
+    const processedText = addNaturalPauses(text);
+
     // Use Edge TTS - same natural Thai voices as your Streamlit app!
     const tts = new EdgeTTS({
       voice: selectedVoice,
       lang: "th-TH",
-      rate: "-10%",   // Slightly slower for beginners
+      rate: "-20%",   // Slower for beginners to follow along
       pitch: "default",
     });
 
     // Generate audio to temp file
-    await tts.ttsPromise(text, tempFile);
+    await tts.ttsPromise(processedText, tempFile);
 
     // Read the file
     const audioBuffer = await readFile(tempFile);

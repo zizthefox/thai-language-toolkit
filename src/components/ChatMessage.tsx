@@ -90,31 +90,24 @@ export function ChatMessage({
             </div>
           )}
 
-          {/* Suggestions */}
+          {/* Suggestions - conversation prompts */}
           {displayParsed.suggestions && displayParsed.suggestions.length > 0 && (
             <div className="mt-2 pt-2 border-t border-gray-200 dark:border-zinc-700">
               <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
-                Try saying:
+                What you could say next:
               </p>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-wrap gap-2">
                 {displayParsed.suggestions.map((suggestion, i) => {
-                  // Handle both old format (string) and new format (object)
-                  const thai = typeof suggestion === "string" ? suggestion : suggestion.thai;
-                  const romanization = typeof suggestion === "string" ? null : suggestion.romanization;
+                  const text = typeof suggestion === "string" ? suggestion : suggestion.thai;
 
                   return (
                     <div
                       key={i}
-                      className="bg-gray-200 dark:bg-zinc-700 px-3 py-2 rounded-lg"
+                      className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 px-3 py-1.5 rounded-full"
                     >
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">
-                        {thai}
+                      <p className="text-sm text-blue-700 dark:text-blue-300">
+                        {text}
                       </p>
-                      {romanization && (
-                        <p className="text-xs text-blue-600 dark:text-blue-400 italic">
-                          {romanization}
-                        </p>
-                      )}
                     </div>
                   );
                 })}

@@ -247,10 +247,10 @@ export default function ChatPage() {
           <ChatInput
             onSend={handleSend}
             disabled={isLoading}
-            placeholder="Type in Thai or English..."
+            placeholder="Speak or type in Thai or English..."
           />
           <p className="text-xs text-center text-gray-400 mt-2">
-            Press Enter to send • Shift+Enter for new line
+            Tap the mic to speak • Press Enter to send
           </p>
         </div>
       </footer>

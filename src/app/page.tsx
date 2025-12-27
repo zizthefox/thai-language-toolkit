@@ -77,20 +77,28 @@ export default function Home() {
             </span>
           </div>
 
-          {/* Text Breakdown - Link to Streamlit */}
-          <div className="p-6 bg-white dark:bg-zinc-800 rounded-2xl shadow-lg border border-gray-200 dark:border-zinc-700">
+          {/* Text Breakdown */}
+          <Link
+            href="/breakdown"
+            className="group p-6 bg-white dark:bg-zinc-800 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-200 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-500"
+          >
             <div className="text-4xl mb-4">📝</div>
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
               Text Breakdown
             </h2>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
               Analyze Thai text with word segmentation, romanization, POS
-              tagging, and translation. Powered by PyThaiNLP.
+              tagging, and translation. Powered by GPT.
             </p>
-            <span className="px-3 py-1 bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300 rounded-full text-sm">
-              Available in Streamlit App
-            </span>
-          </div>
+            <div className="flex flex-wrap gap-2">
+              <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-sm">
+                Word Segmentation
+              </span>
+              <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-sm">
+                POS Tagging
+              </span>
+            </div>
+          </Link>
         </div>
 
         {/* Features list */}
