@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Link from "next/link";
+import { Volume2, Loader2, FileText, ArrowLeft } from "lucide-react";
 
 interface WordBreakdown {
   thai: string;
@@ -144,9 +145,10 @@ export default function BreakdownPage() {
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <Link
             href="/"
-            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            className="flex items-center gap-1.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
           >
-            ← Back
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back</span>
           </Link>
           <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
             Text Breakdown
@@ -177,22 +179,7 @@ export default function BreakdownPage() {
             >
               {isLoading ? (
                 <span className="flex items-center gap-2">
-                  <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24">
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      fill="none"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
+                  <Loader2 className="w-4 h-4 animate-spin" />
                   Analyzing
                 </span>
               ) : (
@@ -201,7 +188,7 @@ export default function BreakdownPage() {
             </button>
           </div>
           <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-            Press Enter to analyze • Try: &quot;I want to eat pad thai&quot; or ผมอยากกินผัดไทย
+            Press Enter to analyze
           </p>
         </div>
 
@@ -239,9 +226,9 @@ export default function BreakdownPage() {
                     title="Listen to pronunciation"
                   >
                     {playingText === result.thaiSentence ? (
-                      <span className="text-xl">⏳</span>
+                      <Loader2 className="w-5 h-5 animate-spin text-green-600 dark:text-green-400" />
                     ) : (
-                      <span className="text-xl">🔊</span>
+                      <Volume2 className="w-5 h-5 text-green-600 dark:text-green-400" />
                     )}
                   </button>
                 </div>
@@ -322,9 +309,9 @@ export default function BreakdownPage() {
                           title="Listen to pronunciation"
                         >
                           {playingText === item.thai ? (
-                            <span className="text-sm">⏳</span>
+                            <Loader2 className="w-4 h-4 animate-spin text-gray-600 dark:text-gray-400" />
                           ) : (
-                            <span className="text-sm">🔊</span>
+                            <Volume2 className="w-4 h-4 text-gray-600 dark:text-gray-400" />
                           )}
                         </button>
                       </div>
@@ -398,9 +385,9 @@ export default function BreakdownPage() {
                             title="Listen to pronunciation"
                           >
                             {playingText === word.thai ? (
-                              <span className="text-lg">⏳</span>
+                              <Loader2 className="w-5 h-5 animate-spin text-gray-600 dark:text-gray-400" />
                             ) : (
-                              <span className="text-lg">🔊</span>
+                              <Volume2 className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                             )}
                           </button>
                         </td>
@@ -416,7 +403,9 @@ export default function BreakdownPage() {
         {/* Empty State */}
         {!result && !isLoading && !error && (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4">📝</div>
+            <div className="inline-flex p-4 bg-slate-100 dark:bg-zinc-800 rounded-2xl mb-4">
+              <FileText className="w-12 h-12 text-slate-400 dark:text-slate-500" />
+            </div>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
               Analyze Thai Text
             </h2>

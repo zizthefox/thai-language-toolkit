@@ -1,15 +1,25 @@
 import Link from "next/link";
 import Image from "next/image";
+import {
+  BookOpen,
+  MessageCircle,
+  FileText,
+  Mic,
+  Layers,
+  GraduationCap,
+  Clock,
+  Check,
+} from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-white to-orange-50 dark:from-zinc-900 dark:via-zinc-900 dark:to-zinc-800">
-      {/* Decorative Thai pattern bar */}
-      <div className="h-2 bg-gradient-to-r from-red-700 via-amber-500 to-red-700" />
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-900 dark:via-zinc-900 dark:to-zinc-800">
+      {/* Subtle top accent */}
+      <div className="h-1 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600" />
 
       <main className="max-w-4xl mx-auto px-4 py-12">
         {/* Banner Image */}
-        <div className="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-8">
+        <div className="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-8 shadow-lg">
           <Image
             src="/images/banner.jpg"
             alt="Thai Language Classroom"
@@ -17,36 +27,36 @@ export default function Home() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         </div>
 
         {/* Welcome Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-amber-900 dark:text-amber-100 mb-2">
-            สวัสดีค่ะ
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-2">
+            Thai Language Toolkit
           </h1>
-          <p className="text-lg text-amber-700 dark:text-amber-300 italic mb-4">
-            sawatdi kha — Welcome!
+          <p className="text-lg text-amber-700 dark:text-amber-400 italic mb-4">
+            sawatdi kha — Welcome
           </p>
           <div className="max-w-xl mx-auto">
-            <p className="text-gray-600 dark:text-gray-400">
-              Welcome to your Thai classroom. Learn to speak Thai through
-              real conversations and practical lessons.
+            <p className="text-slate-600 dark:text-slate-400">
+              Learn to speak Thai through real conversations and practical
+              lessons with AI-powered guidance.
             </p>
           </div>
         </div>
 
-        {/* Decorative divider */}
+        {/* Divider */}
         <div className="flex items-center justify-center gap-4 mb-12">
-          <div className="h-px w-16 bg-gradient-to-r from-transparent to-amber-400" />
-          <span className="text-amber-500">✦</span>
-          <div className="h-px w-16 bg-gradient-to-l from-transparent to-amber-400" />
+          <div className="h-px w-16 bg-gradient-to-r from-transparent to-slate-300 dark:to-slate-600" />
+          <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+          <div className="h-px w-16 bg-gradient-to-l from-transparent to-slate-300 dark:to-slate-600" />
         </div>
 
-        {/* Classroom Section */}
+        {/* Lessons Section */}
         <div className="mb-8">
-          <h2 className="text-sm font-semibold text-amber-800 dark:text-amber-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-            <span className="text-lg">📚</span>
+          <h2 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <BookOpen className="w-4 h-4" />
             Your Lessons
           </h2>
 
@@ -54,33 +64,35 @@ export default function Home() {
             {/* Conversation Practice */}
             <Link
               href="/chat"
-              className="group relative p-6 bg-white dark:bg-zinc-800 rounded-2xl shadow-md hover:shadow-xl transition-all border-2 border-amber-200 dark:border-amber-900 hover:border-amber-400 dark:hover:border-amber-600 overflow-hidden"
+              className="group relative p-6 bg-white dark:bg-zinc-800 rounded-2xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-zinc-700 hover:border-amber-400 dark:hover:border-amber-600 overflow-hidden"
             >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-100 dark:from-amber-900/30 to-transparent rounded-bl-full" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-50 dark:from-amber-900/20 to-transparent rounded-bl-full" />
               <div className="relative">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="text-3xl">🗣️</span>
+                  <div className="p-2.5 bg-amber-100 dark:bg-amber-900/40 rounded-xl">
+                    <MessageCircle className="w-6 h-6 text-amber-700 dark:text-amber-400" />
+                  </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">
+                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">
                       Conversation Practice
                     </h3>
-                    <p className="text-sm text-amber-600 dark:text-amber-500">
-                      ฝึกพูดภาษาไทย
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      Interactive roleplay scenarios
                     </p>
                   </div>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
                   Practice real-world scenarios like ordering food, shopping, or
                   taking a taxi. Speak or type — get corrections in real-time.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded text-xs">
+                  <span className="px-2.5 py-1 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-md text-xs font-medium">
                     🍜 Restaurant
                   </span>
-                  <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs">
+                  <span className="px-2.5 py-1 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-md text-xs font-medium">
                     🏮 Night Market
                   </span>
-                  <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs">
+                  <span className="px-2.5 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-md text-xs font-medium">
                     🚕 Taxi
                   </span>
                 </div>
@@ -90,30 +102,32 @@ export default function Home() {
             {/* Text Breakdown */}
             <Link
               href="/breakdown"
-              className="group relative p-6 bg-white dark:bg-zinc-800 rounded-2xl shadow-md hover:shadow-xl transition-all border-2 border-amber-200 dark:border-amber-900 hover:border-amber-400 dark:hover:border-amber-600 overflow-hidden"
+              className="group relative p-6 bg-white dark:bg-zinc-800 rounded-2xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-zinc-700 hover:border-amber-400 dark:hover:border-amber-600 overflow-hidden"
             >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-100 dark:from-amber-900/30 to-transparent rounded-bl-full" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-50 dark:from-amber-900/20 to-transparent rounded-bl-full" />
               <div className="relative">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="text-3xl">📝</span>
+                  <div className="p-2.5 bg-amber-100 dark:bg-amber-900/40 rounded-xl">
+                    <FileText className="w-6 h-6 text-amber-700 dark:text-amber-400" />
+                  </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">
+                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">
                       Text Breakdown
                     </h3>
-                    <p className="text-sm text-amber-600 dark:text-amber-500">
-                      วิเคราะห์ประโยค
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      Sentence analysis tool
                     </p>
                   </div>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
                   Type any sentence in English or Thai. See how it breaks down
                   word-by-word with pronunciation and grammar.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs">
+                  <span className="px-2.5 py-1 bg-slate-100 dark:bg-zinc-700 text-slate-600 dark:text-slate-300 rounded-md text-xs font-medium">
                     Word Segmentation
                   </span>
-                  <span className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded text-xs">
+                  <span className="px-2.5 py-1 bg-slate-100 dark:bg-zinc-700 text-slate-600 dark:text-slate-300 rounded-md text-xs font-medium">
                     Sentence Structure
                   </span>
                 </div>
@@ -124,45 +138,49 @@ export default function Home() {
 
         {/* Coming Soon Section */}
         <div className="mb-12">
-          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-500 uppercase tracking-wider mb-4 flex items-center gap-2">
-            <span className="text-lg">🔜</span>
+          <h2 className="text-sm font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <Clock className="w-4 h-4" />
             Coming Soon
           </h2>
 
           <div className="grid md:grid-cols-2 gap-4">
             {/* Pronunciation Practice */}
-            <div className="p-6 bg-gray-50 dark:bg-zinc-800/50 rounded-2xl border-2 border-dashed border-gray-300 dark:border-zinc-700 opacity-75">
+            <div className="p-6 bg-slate-50 dark:bg-zinc-800/50 rounded-2xl border border-dashed border-slate-300 dark:border-zinc-700 opacity-60">
               <div className="flex items-center gap-3 mb-3">
-                <span className="text-3xl grayscale">🎤</span>
+                <div className="p-2.5 bg-slate-200 dark:bg-zinc-700 rounded-xl">
+                  <Mic className="w-6 h-6 text-slate-400 dark:text-slate-500" />
+                </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-500 dark:text-gray-400">
+                  <h3 className="text-xl font-semibold text-slate-500 dark:text-slate-400">
                     Pronunciation Practice
                   </h3>
-                  <p className="text-sm text-gray-400 dark:text-gray-500">
-                    ฝึกออกเสียง
+                  <p className="text-sm text-slate-400 dark:text-slate-500">
+                    Tone training
                   </p>
                 </div>
               </div>
-              <p className="text-gray-500 dark:text-gray-500 text-sm">
+              <p className="text-slate-500 dark:text-slate-500 text-sm">
                 Record yourself and compare with native speakers. Master the 5
                 Thai tones.
               </p>
             </div>
 
             {/* Flashcards */}
-            <div className="p-6 bg-gray-50 dark:bg-zinc-800/50 rounded-2xl border-2 border-dashed border-gray-300 dark:border-zinc-700 opacity-75">
+            <div className="p-6 bg-slate-50 dark:bg-zinc-800/50 rounded-2xl border border-dashed border-slate-300 dark:border-zinc-700 opacity-60">
               <div className="flex items-center gap-3 mb-3">
-                <span className="text-3xl grayscale">🃏</span>
+                <div className="p-2.5 bg-slate-200 dark:bg-zinc-700 rounded-xl">
+                  <Layers className="w-6 h-6 text-slate-400 dark:text-slate-500" />
+                </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-500 dark:text-gray-400">
+                  <h3 className="text-xl font-semibold text-slate-500 dark:text-slate-400">
                     Flashcards
                   </h3>
-                  <p className="text-sm text-gray-400 dark:text-gray-500">
-                    บัตรคำศัพท์
+                  <p className="text-sm text-slate-400 dark:text-slate-500">
+                    Spaced repetition
                   </p>
                 </div>
               </div>
-              <p className="text-gray-500 dark:text-gray-500 text-sm">
+              <p className="text-slate-500 dark:text-slate-500 text-sm">
                 Study vocabulary with spaced repetition. Master the most common
                 Thai words.
               </p>
@@ -171,52 +189,60 @@ export default function Home() {
         </div>
 
         {/* What You'll Learn */}
-        <div className="bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl p-8 border border-amber-200 dark:border-amber-800">
-          <h3 className="text-lg font-semibold text-amber-900 dark:text-amber-100 mb-4 flex items-center gap-2">
-            <span>🎓</span>
+        <div className="bg-slate-50 dark:bg-zinc-800/50 rounded-2xl p-8 border border-slate-200 dark:border-zinc-700">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+            <GraduationCap className="w-5 h-5 text-amber-600" />
             What You&apos;ll Learn
           </h3>
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="flex items-start gap-3">
-              <span className="text-amber-600 dark:text-amber-400 mt-1">✦</span>
+              <div className="mt-0.5 p-1 bg-amber-100 dark:bg-amber-900/30 rounded">
+                <Check className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              </div>
               <div>
-                <p className="font-medium text-gray-900 dark:text-white">
+                <p className="font-medium text-slate-900 dark:text-white">
                   Speak naturally
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-slate-600 dark:text-slate-400">
                   Learn how Thai people actually talk
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <span className="text-amber-600 dark:text-amber-400 mt-1">✦</span>
+              <div className="mt-0.5 p-1 bg-amber-100 dark:bg-amber-900/30 rounded">
+                <Check className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              </div>
               <div>
-                <p className="font-medium text-gray-900 dark:text-white">
+                <p className="font-medium text-slate-900 dark:text-white">
                   Hear pronunciation
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-slate-600 dark:text-slate-400">
                   Native Thai voices for every phrase
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <span className="text-amber-600 dark:text-amber-400 mt-1">✦</span>
+              <div className="mt-0.5 p-1 bg-amber-100 dark:bg-amber-900/30 rounded">
+                <Check className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              </div>
               <div>
-                <p className="font-medium text-gray-900 dark:text-white">
+                <p className="font-medium text-slate-900 dark:text-white">
                   Understand structure
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-slate-600 dark:text-slate-400">
                   See how Thai sentences are built
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <span className="text-amber-600 dark:text-amber-400 mt-1">✦</span>
+              <div className="mt-0.5 p-1 bg-amber-100 dark:bg-amber-900/30 rounded">
+                <Check className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              </div>
               <div>
-                <p className="font-medium text-gray-900 dark:text-white">
+                <p className="font-medium text-slate-900 dark:text-white">
                   Get corrections
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-slate-600 dark:text-slate-400">
                   Gentle feedback on your mistakes
                 </p>
               </div>
@@ -226,17 +252,14 @@ export default function Home() {
 
         {/* Footer */}
         <footer className="mt-12 text-center">
-          <p className="text-amber-700 dark:text-amber-400 font-medium mb-1">
-            ขอให้โชคดี — Good luck!
-          </p>
-          <p className="text-gray-400 dark:text-gray-500 text-xs">
+          <p className="text-slate-500 dark:text-slate-400 text-sm">
             Built with Next.js & OpenAI
           </p>
         </footer>
       </main>
 
-      {/* Bottom decorative bar */}
-      <div className="h-2 bg-gradient-to-r from-red-700 via-amber-500 to-red-700" />
+      {/* Bottom accent */}
+      <div className="h-1 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600" />
     </div>
   );
 }

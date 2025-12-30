@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Volume2, Loader2, Lightbulb } from "lucide-react";
 import { ParsedResponse } from "@/lib/types";
 
 interface ChatMessageProps {
@@ -75,9 +76,9 @@ export function ChatMessage({
                 title="Listen to pronunciation"
               >
                 {isPlaying ? (
-                  <span className="text-lg">⏳</span>
+                  <Loader2 className="w-5 h-5 animate-spin text-gray-600 dark:text-gray-400" />
                 ) : (
-                  <span className="text-lg">🔊</span>
+                  <Volume2 className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                 )}
               </button>
             )}
@@ -96,9 +97,9 @@ export function ChatMessage({
           {/* Correction if any */}
           {displayParsed.correction && (
             <div className="mt-2 p-2 bg-amber-50 dark:bg-amber-900/30 rounded-lg border border-amber-200 dark:border-amber-700">
-              <p className="text-sm text-amber-800 dark:text-amber-200">
-                <span className="font-medium">💡 Tip:</span>{" "}
-                {displayParsed.correction}
+              <p className="text-sm text-amber-800 dark:text-amber-200 flex items-start gap-1.5">
+                <Lightbulb className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <span>{displayParsed.correction}</span>
               </p>
             </div>
           )}
