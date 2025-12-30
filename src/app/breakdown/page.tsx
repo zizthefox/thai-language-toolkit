@@ -258,83 +258,6 @@ export default function BreakdownPage() {
               </p>
             </div>
 
-            {/* Word-by-word breakdown table */}
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                Word-by-Word Breakdown
-              </h2>
-              <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-zinc-700">
-                <table className="w-full">
-                  <thead className="bg-gray-100 dark:bg-zinc-800">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
-                        Thai
-                      </th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
-                        Pronunciation
-                      </th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
-                        Type
-                      </th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
-                        Meaning
-                      </th>
-                      <th className="px-4 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 w-16">
-                        Listen
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 dark:divide-zinc-700">
-                    {result.words.map((word, index) => (
-                      <tr
-                        key={index}
-                        className="bg-white dark:bg-zinc-900 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors"
-                      >
-                        <td className="px-4 py-3">
-                          <span className="text-xl font-medium text-gray-900 dark:text-white">
-                            {word.thai}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3">
-                          <span className="text-blue-600 dark:text-blue-400 italic">
-                            {word.romanization}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3">
-                          <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${getPosColor(
-                              word.pos
-                            )}`}
-                          >
-                            {word.pos}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3">
-                          <span className="text-gray-600 dark:text-gray-400">
-                            {word.english}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 text-center">
-                          <button
-                            onClick={() => handleSpeak(word.thai)}
-                            disabled={playingText === word.thai}
-                            className="p-1.5 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-lg transition-colors disabled:opacity-50"
-                            title="Listen to pronunciation"
-                          >
-                            {playingText === word.thai ? (
-                              <span className="text-lg">⏳</span>
-                            ) : (
-                              <span className="text-lg">🔊</span>
-                            )}
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
             {/* Structure Comparison */}
             {result.structureComparison && (
               <div className="space-y-4">
@@ -411,20 +334,80 @@ export default function BreakdownPage() {
               </div>
             )}
 
-            {/* POS Legend */}
-            <div className="p-4 bg-gray-50 dark:bg-zinc-800 rounded-xl border border-gray-200 dark:border-zinc-700">
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                Part of Speech Legend
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {Object.entries(POS_COLORS).map(([pos, colorClass]) => (
-                  <span
-                    key={pos}
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${colorClass}`}
-                  >
-                    {pos}
-                  </span>
-                ))}
+            {/* Word-by-word breakdown table */}
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                Word-by-Word Breakdown
+              </h2>
+              <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-zinc-700">
+                <table className="w-full">
+                  <thead className="bg-gray-100 dark:bg-zinc-800">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        Thai
+                      </th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        Pronunciation
+                      </th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        Type
+                      </th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        Meaning
+                      </th>
+                      <th className="px-4 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 w-16">
+                        Listen
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 dark:divide-zinc-700">
+                    {result.words.map((word, index) => (
+                      <tr
+                        key={index}
+                        className="bg-white dark:bg-zinc-900 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors"
+                      >
+                        <td className="px-4 py-3">
+                          <span className="text-xl font-medium text-gray-900 dark:text-white">
+                            {word.thai}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="text-blue-600 dark:text-blue-400 italic">
+                            {word.romanization}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${getPosColor(
+                              word.pos
+                            )}`}
+                          >
+                            {word.pos}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="text-gray-600 dark:text-gray-400">
+                            {word.english}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          <button
+                            onClick={() => handleSpeak(word.thai)}
+                            disabled={playingText === word.thai}
+                            className="p-1.5 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-lg transition-colors disabled:opacity-50"
+                            title="Listen to pronunciation"
+                          >
+                            {playingText === word.thai ? (
+                              <span className="text-lg">⏳</span>
+                            ) : (
+                              <span className="text-lg">🔊</span>
+                            )}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
