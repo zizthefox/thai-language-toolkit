@@ -14,6 +14,7 @@ interface WordOrderItem {
   english: string;
   thai: string;
   pos: string;
+  romanization: string;
 }
 
 interface StructureComparison {
@@ -380,12 +381,29 @@ export default function BreakdownPage() {
                         <span className="text-lg font-medium text-gray-900 dark:text-white">
                           {item.thai}
                         </span>
+                        {item.romanization && (
+                          <span className="text-xs text-blue-600 dark:text-blue-400 italic">
+                            {item.romanization}
+                          </span>
+                        )}
                         <span className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                           {item.english}
                         </span>
                         <span className="text-[10px] font-medium mt-1 opacity-75">
                           {item.pos}
                         </span>
+                        <button
+                          onClick={() => handleSpeak(item.thai)}
+                          disabled={playingText === item.thai}
+                          className="mt-2 p-1 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded transition-colors disabled:opacity-50"
+                          title="Listen to pronunciation"
+                        >
+                          {playingText === item.thai ? (
+                            <span className="text-sm">⏳</span>
+                          ) : (
+                            <span className="text-sm">🔊</span>
+                          )}
+                        </button>
                       </div>
                     ))}
                   </div>

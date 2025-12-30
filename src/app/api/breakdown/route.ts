@@ -36,11 +36,11 @@ Return your response as valid JSON with this exact structure:
     "english": "I want to eat pad thai",
     "literal": "I want eat pad-thai (polite)",
     "wordOrder": [
-      {"english": "I", "thai": "ผม", "pos": "pronoun"},
-      {"english": "want", "thai": "อยาก", "pos": "verb"},
-      {"english": "eat", "thai": "กิน", "pos": "verb"},
-      {"english": "pad thai", "thai": "ผัดไทย", "pos": "noun"},
-      {"english": "(polite)", "thai": "ครับ", "pos": "particle"}
+      {"english": "I", "thai": "ผม", "romanization": "phom", "pos": "pronoun"},
+      {"english": "want", "thai": "อยาก", "romanization": "yak", "pos": "verb"},
+      {"english": "eat", "thai": "กิน", "romanization": "kin", "pos": "verb"},
+      {"english": "pad thai", "thai": "ผัดไทย", "romanization": "phat thai", "pos": "noun"},
+      {"english": "(polite)", "thai": "ครับ", "romanization": "khrap", "pos": "particle"}
     ]
   }
 }
@@ -53,8 +53,14 @@ IMPORTANT RULES:
 5. Use lowercase for romanization
 6. Keep POS tags simple and consistent (noun, verb, adjective, adverb, particle, classifier, pronoun, preposition, conjunction, interjection, number)
 7. For the fullTranslation, provide a natural English translation
-8. The structureComparison wordOrder should map each Thai word to its English equivalent with POS
-9. Return ONLY valid JSON, no markdown or extra formatting`;
+8. The structureComparison wordOrder MUST:
+   - Be in the EXACT same order as the words array (Thai word order)
+   - Have one entry for each word in the words array
+   - Include "romanization" field with the pronunciation for each Thai word (matching the words array)
+   - The "english" field should be the literal word-by-word translation of each Thai word
+   - When all wordOrder.english values are read in sequence, they should form the "literal" string
+9. The "literal" field should be constructed by joining all wordOrder.english values (the word-by-word translation following Thai structure)
+10. Return ONLY valid JSON, no markdown or extra formatting`;
 
 export async function POST(req: Request) {
   try {
