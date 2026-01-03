@@ -58,6 +58,7 @@ export default function BreakdownPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [playingText, setPlayingText] = useState<string | null>(null);
+  const [gender, setGender] = useState<"male" | "female">("male");
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const handleSpeak = async (text: string) => {
@@ -114,7 +115,7 @@ export default function BreakdownPage() {
       const response = await fetch("/api/breakdown", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: input.trim() }),
+        body: JSON.stringify({ text: input.trim(), gender }),
       });
 
       if (!response.ok) {
@@ -158,6 +159,35 @@ export default function BreakdownPage() {
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-8">
+        {/* Gender Selection */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            I am speaking as
+          </label>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setGender("male")}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                gender === "male"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-zinc-700"
+              }`}
+            >
+              Male (ผม / ครับ)
+            </button>
+            <button
+              onClick={() => setGender("female")}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                gender === "female"
+                  ? "bg-pink-600 text-white"
+                  : "bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-zinc-700"
+              }`}
+            >
+              Female (ฉัน / ค่ะ)
+            </button>
+          </div>
+        </div>
+
         {/* Input Section */}
         <div className="mb-8">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">

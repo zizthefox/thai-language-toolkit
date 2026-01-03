@@ -5,10 +5,22 @@ export const maxDuration = 30;
 
 const openai = new OpenAI();
 
-const SYSTEM_PROMPT = `You are a Thai language expert and teacher. Your task is to analyze text, break it down word by word, and explain how Thai sentence structure differs from English.
+function getSystemPrompt(gender: "male" | "female") {
+  const isMale = gender === "male";
+  const pronoun = isMale ? "ผม (phom)" : "ฉัน (chan)";
+  const particle = isMale ? "ครับ (khrap)" : "ค่ะ (kha)";
+  const examplePronoun = isMale ? "ผม" : "ฉัน";
+  const examplePronounRoman = isMale ? "phom" : "chan";
+  const exampleParticle = isMale ? "ครับ" : "ค่ะ";
+  const exampleParticleRoman = isMale ? "khrap" : "kha";
+  const genderLabel = isMale ? "male" : "female";
+
+  return `You are a Thai language expert and teacher. Your task is to analyze text, break it down word by word, and explain how Thai sentence structure differs from English.
+
+IMPORTANT: The speaker is ${genderLabel}. Use ${pronoun} for "I" and ${particle} for polite particles.
 
 IMPORTANT: The input can be in Thai OR English.
-- If the input is in English, first translate it to natural Thai, then break down that Thai text.
+- If the input is in English, first translate it to natural Thai using ${genderLabel}-appropriate pronouns and particles, then break down that Thai text.
 - If the input is in Thai, break it down directly.
 
 For each word, provide:
@@ -22,25 +34,25 @@ Also provide a structure comparison to help learners understand how Thai differs
 Return your response as valid JSON with this exact structure:
 {
   "inputWasThai": false,
-  "thaiSentence": "ผมอยากกินผัดไทยครับ",
-  "sentenceRomanization": "phom yak kin phat thai khrap",
+  "thaiSentence": "${examplePronoun}อยากกินผัดไทย${exampleParticle}",
+  "sentenceRomanization": "${examplePronounRoman} yak kin phat thai ${exampleParticleRoman}",
   "words": [
-    {"thai": "ผม", "romanization": "phom", "pos": "pronoun", "english": "I (male)"},
+    {"thai": "${examplePronoun}", "romanization": "${examplePronounRoman}", "pos": "pronoun", "english": "I (${genderLabel})"},
     {"thai": "อยาก", "romanization": "yak", "pos": "verb", "english": "want"},
     {"thai": "กิน", "romanization": "kin", "pos": "verb", "english": "eat"},
     {"thai": "ผัดไทย", "romanization": "phat thai", "pos": "noun", "english": "pad thai"},
-    {"thai": "ครับ", "romanization": "khrap", "pos": "particle", "english": "(polite particle, male)"}
+    {"thai": "${exampleParticle}", "romanization": "${exampleParticleRoman}", "pos": "particle", "english": "(polite particle, ${genderLabel})"}
   ],
-  "fullTranslation": "I want to eat pad thai (polite, male speaker)",
+  "fullTranslation": "I want to eat pad thai (polite, ${genderLabel} speaker)",
   "structureComparison": {
     "english": "I want to eat pad thai",
     "literal": "I want eat pad-thai (polite)",
     "wordOrder": [
-      {"english": "I", "thai": "ผม", "romanization": "phom", "pos": "pronoun"},
+      {"english": "I", "thai": "${examplePronoun}", "romanization": "${examplePronounRoman}", "pos": "pronoun"},
       {"english": "want", "thai": "อยาก", "romanization": "yak", "pos": "verb"},
       {"english": "eat", "thai": "กิน", "romanization": "kin", "pos": "verb"},
       {"english": "pad thai", "thai": "ผัดไทย", "romanization": "phat thai", "pos": "noun"},
-      {"english": "(polite)", "thai": "ครับ", "romanization": "khrap", "pos": "particle"}
+      {"english": "(polite)", "thai": "${exampleParticle}", "romanization": "${exampleParticleRoman}", "pos": "particle"}
     ]
   }
 }
@@ -60,11 +72,14 @@ IMPORTANT RULES:
    - The "english" field should be the literal word-by-word translation of each Thai word
    - When all wordOrder.english values are read in sequence, they should form the "literal" string
 9. The "literal" field should be constructed by joining all wordOrder.english values (the word-by-word translation following Thai structure)
-10. Return ONLY valid JSON, no markdown or extra formatting`;
+10. Return ONLY valid JSON, no markdown or extra formatting
+11. CRITICAL: When the input contains "I" or first-person references, use ${examplePronoun} (${examplePronounRoman}) for the ${genderLabel} speaker
+12. CRITICAL: When adding polite particles, use ${exampleParticle} (${exampleParticleRoman}) for the ${genderLabel} speaker`;
+}
 
 export async function POST(req: Request) {
   try {
-    const { text } = await req.json();
+    const { text, gender = "male" } = await req.json();
 
     if (!text || !text.trim()) {
       return NextResponse.json(
@@ -73,10 +88,12 @@ export async function POST(req: Request) {
       );
     }
 
+    const validGender = gender === "female" ? "female" : "male";
+
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: SYSTEM_PROMPT },
+        { role: "system", content: getSystemPrompt(validGender) },
         { role: "user", content: text.trim() },
       ],
       temperature: 0.3, // Lower temperature for more consistent output

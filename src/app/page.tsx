@@ -36,7 +36,7 @@ export default function Home() {
             Thai Language Toolkit
           </h1>
           <p className="text-lg text-amber-700 dark:text-amber-400 italic mb-4">
-            sawatdi kha — Welcome
+            สวัสดี — Welcome
           </p>
           <div className="max-w-xl mx-auto">
             <p className="text-slate-600 dark:text-slate-400">
