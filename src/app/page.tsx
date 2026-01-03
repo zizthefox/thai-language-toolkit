@@ -133,6 +133,44 @@ export default function Home() {
                 </div>
               </div>
             </Link>
+
+            {/* Flashcards */}
+            <Link
+              href="/flashcards"
+              className="group relative p-6 bg-white dark:bg-zinc-800 rounded-2xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-zinc-700 hover:border-amber-400 dark:hover:border-amber-600 overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-50 dark:from-amber-900/20 to-transparent rounded-bl-full" />
+              <div className="relative">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-2.5 bg-amber-100 dark:bg-amber-900/40 rounded-xl">
+                    <Layers className="w-6 h-6 text-amber-700 dark:text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">
+                      Flashcards
+                    </h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      Vocabulary quiz
+                    </p>
+                  </div>
+                </div>
+                <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                  Test your vocabulary with AI-generated flashcards. Choose
+                  categories and quiz yourself on Thai words.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2.5 py-1 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-md text-xs font-medium">
+                    Food
+                  </span>
+                  <span className="px-2.5 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-md text-xs font-medium">
+                    Travel
+                  </span>
+                  <span className="px-2.5 py-1 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-md text-xs font-medium">
+                    Numbers
+                  </span>
+                </div>
+              </div>
+            </Link>
           </div>
         </div>
 
@@ -162,27 +200,6 @@ export default function Home() {
               <p className="text-slate-500 dark:text-slate-500 text-sm">
                 Record yourself and compare with native speakers. Master the 5
                 Thai tones.
-              </p>
-            </div>
-
-            {/* Flashcards */}
-            <div className="p-6 bg-slate-50 dark:bg-zinc-800/50 rounded-2xl border border-dashed border-slate-300 dark:border-zinc-700 opacity-60">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-2.5 bg-slate-200 dark:bg-zinc-700 rounded-xl">
-                  <Layers className="w-6 h-6 text-slate-400 dark:text-slate-500" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-slate-500 dark:text-slate-400">
-                    Flashcards
-                  </h3>
-                  <p className="text-sm text-slate-400 dark:text-slate-500">
-                    Spaced repetition
-                  </p>
-                </div>
-              </div>
-              <p className="text-slate-500 dark:text-slate-500 text-sm">
-                Study vocabulary with spaced repetition. Master the most common
-                Thai words.
               </p>
             </div>
           </div>
