@@ -7,7 +7,6 @@ import {
   Mic,
   Layers,
   GraduationCap,
-  Clock,
   Check,
 } from "lucide-react";
 
@@ -171,37 +170,50 @@ export default function Home() {
                 </div>
               </div>
             </Link>
-          </div>
-        </div>
 
-        {/* Coming Soon Section */}
-        <div className="mb-12">
-          <h2 className="text-sm font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
-            <Clock className="w-4 h-4" />
-            Coming Soon
-          </h2>
-
-          <div className="grid md:grid-cols-2 gap-4">
             {/* Pronunciation Practice */}
-            <div className="p-6 bg-slate-50 dark:bg-zinc-800/50 rounded-2xl border border-dashed border-slate-300 dark:border-zinc-700 opacity-60">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-2.5 bg-slate-200 dark:bg-zinc-700 rounded-xl">
-                  <Mic className="w-6 h-6 text-slate-400 dark:text-slate-500" />
+            <Link
+              href="/tones"
+              className="group relative p-6 bg-white dark:bg-zinc-800 rounded-2xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-zinc-700 hover:border-amber-400 dark:hover:border-amber-600 overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-50 dark:from-amber-900/20 to-transparent rounded-bl-full" />
+              <div className="relative">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-2.5 bg-amber-100 dark:bg-amber-900/40 rounded-xl">
+                    <Mic className="w-6 h-6 text-amber-700 dark:text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">
+                      Tone Practice
+                    </h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      Master the 5 Thai tones
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-slate-500 dark:text-slate-400">
-                    Pronunciation Practice
-                  </h3>
-                  <p className="text-sm text-slate-400 dark:text-slate-500">
-                    Tone training
-                  </p>
+                <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                  Listen and identify tones, or speak and get feedback.
+                  Learn to distinguish words like "mai" with 5 different meanings.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2.5 py-1 bg-gray-100 dark:bg-zinc-700 text-gray-700 dark:text-gray-300 rounded-md text-xs font-medium">
+                    Mid
+                  </span>
+                  <span className="px-2.5 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-md text-xs font-medium">
+                    Low
+                  </span>
+                  <span className="px-2.5 py-1 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-md text-xs font-medium">
+                    High
+                  </span>
+                  <span className="px-2.5 py-1 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-md text-xs font-medium">
+                    Falling
+                  </span>
+                  <span className="px-2.5 py-1 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-md text-xs font-medium">
+                    Rising
+                  </span>
                 </div>
               </div>
-              <p className="text-slate-500 dark:text-slate-500 text-sm">
-                Record yourself and compare with native speakers. Master the 5
-                Thai tones.
-              </p>
-            </div>
+            </Link>
           </div>
         </div>
 
