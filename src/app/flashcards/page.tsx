@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { recordFlashcardSession } from "@/lib/progress";
 import {
   Volume2,
   Loader2,
@@ -239,6 +240,21 @@ export default function FlashcardsPage() {
 
   const currentWord = words[currentIndex];
   const scorePercentage = words.length > 0 ? Math.round((score / words.length) * 100) : 0;
+
+  // Record progress when quiz ends
+  useEffect(() => {
+    if (phase === "results" && answers.length > 0) {
+      recordFlashcardSession({
+        score,
+        total: answers.length,
+        categories: selectedCategories,
+        answers: answers.map((a) => ({
+          word: a.word,
+          isCorrect: a.isCorrect,
+        })),
+      });
+    }
+  }, [phase, answers, score, selectedCategories]);
 
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-900">

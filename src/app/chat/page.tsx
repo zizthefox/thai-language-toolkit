@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
 import { ScenarioSelector } from "@/components/ScenarioSelector";
 import { SCENARIOS, Scenario, ChatMessage as ChatMessageType } from "@/lib/types";
+import { recordChatSession } from "@/lib/progress";
 import Link from "next/link";
 
 export default function ChatPage() {
@@ -18,6 +19,55 @@ export default function ChatPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  // Progress tracking
+  const sessionStartedRef = useRef(false);
+  const previousScenarioRef = useRef<string>(scenario.id);
+
+  // Count corrections in messages (look for correction patterns)
+  const countCorrections = useCallback((msgs: ChatMessageType[]) => {
+    let corrections = 0;
+    for (const msg of msgs) {
+      if (msg.role === "assistant") {
+        // Check for correction patterns in assistant messages
+        const correctionPatterns = [
+          /\*\*Correction\*\*/i,
+          /better to say/i,
+          /should be/i,
+          /instead of/i,
+          /correct way/i,
+          /more natural/i,
+          /小tip/i,
+          /tip:/i,
+        ];
+        if (correctionPatterns.some(pattern => pattern.test(msg.content))) {
+          corrections++;
+        }
+      }
+    }
+    return corrections;
+  }, []);
+
+  // Record session progress
+  const recordSession = useCallback(() => {
+    if (!sessionStartedRef.current) return;
+
+    const userMessages = messages.filter(m => m.role === "user" && m.content !== "[START CONVERSATION]");
+    if (userMessages.length === 0) return;
+
+    recordChatSession({
+      scenario: previousScenarioRef.current,
+      messageCount: messages.filter(m => m.content !== "[START CONVERSATION]").length,
+      correctionsReceived: countCorrections(messages),
+    });
+  }, [messages, countCorrections]);
+
+  // Record session on unmount
+  useEffect(() => {
+    return () => {
+      recordSession();
+    };
+  }, [recordSession]);
+
   // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -26,6 +76,13 @@ export default function ChatPage() {
   // Start conversation when scenario changes
   useEffect(() => {
     const initConversation = async () => {
+      // Record previous session if switching scenarios
+      if (previousScenarioRef.current !== scenario.id) {
+        recordSession();
+        sessionStartedRef.current = false;
+      }
+      previousScenarioRef.current = scenario.id;
+
       setMessages([]);
       setIsLoading(true);
       setShowSceneIntro(true);
@@ -65,7 +122,7 @@ export default function ChatPage() {
     };
 
     initConversation();
-  }, [scenario]);
+  }, [scenario, recordSession]);
 
   // Hide scene intro after first message from user
   useEffect(() => {
@@ -117,6 +174,11 @@ export default function ChatPage() {
   };
 
   const handleSend = async (message: string) => {
+    // Mark session as started when user sends first message
+    if (!sessionStartedRef.current) {
+      sessionStartedRef.current = true;
+    }
+
     // Add user message
     const userMessage: ChatMessageType = { role: "user", content: message };
     const updatedMessages = [...messages, userMessage];

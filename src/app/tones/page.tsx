@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { recordToneSession } from "@/lib/progress";
 import {
   Volume2,
   Loader2,
@@ -328,7 +329,12 @@ export default function TonesPage() {
   };
 
   const compareToneWord = (target: ToneWord, transcription: string, toneSet: ToneSet): { isMatch: boolean; feedback: string } => {
-    const cleanTranscription = transcription.trim();
+    // Clean transcription: remove punctuation, ellipsis, whitespace
+    const cleanTranscription = transcription
+      .trim()
+      .replace(/[.…,!?。、！？\s]+$/g, "") // Remove trailing punctuation
+      .replace(/^[.…,!?。、！？\s]+/g, "") // Remove leading punctuation
+      .trim();
 
     if (!cleanTranscription) {
       return { isMatch: false, feedback: "Could not hear clearly. Please try again." };
@@ -416,6 +422,24 @@ export default function TonesPage() {
 
   const totalRounds = toneSets.length;
   const scorePercentage = totalRounds > 0 ? Math.round((score / totalRounds) * 100) : 0;
+
+  // Record progress when practice ends
+  useEffect(() => {
+    if (phase === "results" && totalRounds > 0) {
+      const answers = mode === "listen" ? listenAnswers : speakAnswers;
+      recordToneSession({
+        mode,
+        score,
+        total: answers.length,
+        answers: answers.map((a) => ({
+          targetTone: a.targetWord.tone,
+          targetThai: a.targetWord.thai,
+          baseSound: a.set.baseSound,
+          isCorrect: a.isCorrect,
+        })),
+      });
+    }
+  }, [phase, mode, score, totalRounds, listenAnswers, speakAnswers]);
 
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-900">

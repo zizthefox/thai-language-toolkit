@@ -8,6 +8,7 @@ import {
   Layers,
   GraduationCap,
   Check,
+  LayoutDashboard,
 } from "lucide-react";
 
 export default function Home() {
@@ -43,6 +44,15 @@ export default function Home() {
               lessons with AI-powered guidance.
             </p>
           </div>
+
+          {/* Dashboard Link */}
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors font-medium"
+          >
+            <LayoutDashboard className="w-5 h-5" />
+            View Your Progress
+          </Link>
         </div>
 
         {/* Divider */}
