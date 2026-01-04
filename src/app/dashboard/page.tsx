@@ -57,11 +57,6 @@ export default function DashboardPage() {
   useEffect(() => {
     const p = getProgress();
     setProgress(p);
-
-    // Fetch AI recommendations if user has progress
-    if (p.overall.totalSessions > 0) {
-      fetchRecommendations(p);
-    }
   }, []);
 
   const fetchRecommendations = async (progressData: AllProgress) => {
@@ -227,9 +222,13 @@ export default function DashboardPage() {
               )}
 
               {!loadingRecs && !recommendations && (
-                <p className="text-purple-600 dark:text-purple-400 text-sm">
-                  Complete more sessions to get personalized recommendations.
-                </p>
+                <button
+                  onClick={() => fetchRecommendations(progress)}
+                  className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  Get AI Recommendations
+                </button>
               )}
             </div>
 
