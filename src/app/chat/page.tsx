@@ -97,25 +97,49 @@ export default function ChatPage() {
           }),
         });
 
-        if (response.ok) {
-          const reader = response.body?.getReader();
-          const decoder = new TextDecoder();
-          let fullContent = "";
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("API error:", response.status, errorText);
+          setMessages([{
+            role: "assistant",
+            content: JSON.stringify({
+              thai: "ขอโทษค่ะ ระบบมีปัญหา",
+              romanization: "khǒo thôot khâ, rá-bòp mii bpan-hǎa",
+              english: `Error: ${response.status === 401 ? "Invalid API key" : response.status === 429 ? "Rate limit exceeded" : "Could not connect to AI service"}. Please check your OpenAI API key.`,
+              correction: null,
+              suggestions: ["Check API key", "Try again later"]
+            })
+          }]);
+          return;
+        }
 
-          if (reader) {
-            while (true) {
-              const { done, value } = await reader.read();
-              if (done) break;
-              fullContent += decoder.decode(value);
-            }
-          }
+        const reader = response.body?.getReader();
+        const decoder = new TextDecoder();
+        let fullContent = "";
 
-          if (fullContent) {
-            setMessages([{ role: "assistant", content: fullContent }]);
+        if (reader) {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            fullContent += decoder.decode(value);
           }
+        }
+
+        if (fullContent) {
+          setMessages([{ role: "assistant", content: fullContent }]);
         }
       } catch (error) {
         console.error("Failed to start conversation:", error);
+        setMessages([{
+          role: "assistant",
+          content: JSON.stringify({
+            thai: "ขอโทษค่ะ เชื่อมต่อไม่ได้",
+            romanization: "khǒo thôot khâ, chêuam dtòr mâi dâai",
+            english: "Network error: Could not connect to the server. Please check your internet connection.",
+            correction: null,
+            suggestions: ["Check connection", "Refresh page"]
+          })
+        }]);
       } finally {
         setIsLoading(false);
       }
@@ -198,28 +222,58 @@ export default function ChatPage() {
         }),
       });
 
-      if (response.ok) {
-        const reader = response.body?.getReader();
-        const decoder = new TextDecoder();
-        let fullContent = "";
-
-        if (reader) {
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            fullContent += decoder.decode(value);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("API error:", response.status, errorText);
+        setMessages([
+          ...updatedMessages,
+          {
+            role: "assistant",
+            content: JSON.stringify({
+              thai: "ขอโทษค่ะ ลองใหม่อีกครั้ง",
+              romanization: "khǒo thôot khâ, long mài ìik khráng",
+              english: `Error: ${response.status === 401 ? "Invalid API key" : response.status === 429 ? "Rate limit exceeded" : "Could not get response"}`,
+              correction: null,
+              suggestions: ["Try again"]
+            })
           }
-        }
+        ]);
+        return;
+      }
 
-        if (fullContent) {
-          setMessages([
-            ...updatedMessages,
-            { role: "assistant", content: fullContent },
-          ]);
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+      let fullContent = "";
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          fullContent += decoder.decode(value);
         }
+      }
+
+      if (fullContent) {
+        setMessages([
+          ...updatedMessages,
+          { role: "assistant", content: fullContent },
+        ]);
       }
     } catch (error) {
       console.error("Failed to send message:", error);
+      setMessages([
+        ...updatedMessages,
+        {
+          role: "assistant",
+          content: JSON.stringify({
+            thai: "ขอโทษค่ะ เชื่อมต่อไม่ได้",
+            romanization: "khǒo thôot khâ, chêuam dtòr mâi dâai",
+            english: "Network error: Could not connect. Please try again.",
+            correction: null,
+            suggestions: ["Try again"]
+          })
+        }
+      ]);
     } finally {
       setIsLoading(false);
     }
