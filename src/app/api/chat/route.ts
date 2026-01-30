@@ -59,20 +59,51 @@ IMPORTANT: Return ONLY valid JSON, no markdown code blocks or other formatting.`
 }
 
 export async function POST(req: Request) {
-  const { messages, scenario } = await req.json();
+  const startTime = Date.now();
+  console.log("[Chat API] Request received");
 
-  const systemPrompt = getSystemPrompt(scenario || "restaurant");
+  try {
+    const { messages, scenario } = await req.json();
+    console.log("[Chat API] Input:", { messageCount: messages?.length, scenario });
 
-  // Prepend system message
-  const systemMessage = {
-    role: "system" as const,
-    content: systemPrompt,
-  };
+    const systemPrompt = getSystemPrompt(scenario || "restaurant");
 
-  const result = await streamText({
-    model: openai("gpt-4o-mini"),
-    messages: [systemMessage, ...messages],
-  });
+    // Prepend system message
+    const systemMessage = {
+      role: "system" as const,
+      content: systemPrompt,
+    };
 
-  return result.toTextStreamResponse();
+    console.log("[Chat API] Calling OpenAI...");
+    const result = await streamText({
+      model: openai("gpt-4o-mini"),
+      messages: [systemMessage, ...messages],
+    });
+
+    console.log("[Chat API] Stream started in", Date.now() - startTime, "ms");
+    return result.toTextStreamResponse();
+  } catch (error) {
+    const elapsed = Date.now() - startTime;
+    const err = error as { status?: number; message?: string; code?: string };
+
+    console.error("[Chat API] Error after", elapsed, "ms:", {
+      message: err.message,
+      status: err.status,
+      code: err.code,
+      name: (error as Error).name,
+    });
+
+    // Return error response
+    if (err.status === 429) {
+      return new Response(JSON.stringify({ error: "Rate limit exceeded" }), {
+        status: 429,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    return new Response(JSON.stringify({ error: "Failed to get response" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 }

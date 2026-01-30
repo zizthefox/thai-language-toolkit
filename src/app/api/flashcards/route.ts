@@ -34,10 +34,15 @@ Return format:
 {"words": [{"thai": "สวัสดี", "romanization": "sawatdee", "english": "hello"}, ...]}`;
 
 export async function POST(req: Request) {
+  const startTime = Date.now();
+  console.log("[Flashcards API] Request received");
+
   try {
     const { categories, count, usedWords = [] } = await req.json();
+    console.log("[Flashcards API] Input:", { categories, count, usedWordsCount: usedWords.length });
 
     if (!categories || !Array.isArray(categories) || categories.length === 0) {
+      console.log("[Flashcards API] Error: No categories");
       return NextResponse.json(
         { error: "At least one category is required" },
         { status: 400 }
@@ -45,6 +50,7 @@ export async function POST(req: Request) {
     }
 
     if (!count || count < 1 || count > 50) {
+      console.log("[Flashcards API] Error: Invalid count");
       return NextResponse.json(
         { error: "Count must be between 1 and 50" },
         { status: 400 }
@@ -59,6 +65,7 @@ export async function POST(req: Request) {
 Categories to include: ${categories.join(", ")}
 Distribute words roughly evenly across the selected categories.${usedWordsText}`;
 
+    console.log("[Flashcards API] Calling OpenAI...");
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
@@ -67,15 +74,18 @@ Distribute words roughly evenly across the selected categories.${usedWordsText}`
       ],
       temperature: 0.7,
     });
+    console.log("[Flashcards API] OpenAI response in", Date.now() - startTime, "ms");
 
     const content = response.choices[0]?.message?.content;
 
     if (!content) {
+      console.error("[Flashcards API] Error: No content in response");
       throw new Error("No response from OpenAI");
     }
 
     const jsonMatch = content.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
+      console.error("[Flashcards API] Error: Could not parse JSON:", content.substring(0, 200));
       throw new Error("Invalid response format");
     }
 
@@ -88,9 +98,25 @@ Distribute words roughly evenly across the selected categories.${usedWordsText}`
       );
     }
 
+    console.log("[Flashcards API] Success:", result.words?.length, "words in", Date.now() - startTime, "ms");
     return NextResponse.json(result);
   } catch (error) {
-    console.error("Flashcard generation error:", error);
+    const elapsed = Date.now() - startTime;
+    const err = error as { status?: number; message?: string; code?: string };
+
+    console.error("[Flashcards API] Error after", elapsed, "ms:", {
+      message: err.message,
+      status: err.status,
+      code: err.code,
+    });
+
+    if (err.status === 429) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded. Please wait and try again." },
+        { status: 429 }
+      );
+    }
+
     return NextResponse.json(
       { error: "Failed to generate flashcards" },
       { status: 500 }

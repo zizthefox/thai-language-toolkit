@@ -78,10 +78,15 @@ IMPORTANT RULES:
 }
 
 export async function POST(req: Request) {
+  const startTime = Date.now();
+  console.log("[Breakdown API] Request received");
+
   try {
     const { text, gender = "male" } = await req.json();
+    console.log("[Breakdown API] Input:", { textLength: text?.length, gender });
 
     if (!text || !text.trim()) {
+      console.log("[Breakdown API] Error: Empty text");
       return NextResponse.json(
         { error: "Text is required" },
         { status: 400 }
@@ -90,34 +95,72 @@ export async function POST(req: Request) {
 
     const validGender = gender === "female" ? "female" : "male";
 
+    console.log("[Breakdown API] Calling OpenAI...");
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
         { role: "system", content: getSystemPrompt(validGender) },
         { role: "user", content: text.trim() },
       ],
-      temperature: 0.3, // Lower temperature for more consistent output
+      temperature: 0.3,
     });
+    console.log("[Breakdown API] OpenAI response received in", Date.now() - startTime, "ms");
 
     const content = response.choices[0]?.message?.content;
 
     if (!content) {
+      console.error("[Breakdown API] Error: No content in OpenAI response");
       throw new Error("No response from OpenAI");
     }
 
     // Parse the JSON response
     const jsonMatch = content.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
+      console.error("[Breakdown API] Error: Could not parse JSON from response:", content.substring(0, 200));
       throw new Error("Invalid response format");
     }
 
     const result = JSON.parse(jsonMatch[0]);
+    console.log("[Breakdown API] Success in", Date.now() - startTime, "ms");
 
     return NextResponse.json(result);
   } catch (error) {
-    console.error("Breakdown error:", error);
+    const elapsed = Date.now() - startTime;
+
+    // Type guard for OpenAI errors
+    const err = error as { status?: number; message?: string; code?: string };
+
+    console.error("[Breakdown API] Error after", elapsed, "ms:", {
+      message: err.message,
+      status: err.status,
+      code: err.code,
+      name: (error as Error).name,
+    });
+
+    // Return specific error messages based on error type
+    if (err.status === 429) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded. Please wait a moment and try again." },
+        { status: 429 }
+      );
+    }
+
+    if (err.status === 401) {
+      return NextResponse.json(
+        { error: "API authentication failed. Please check the API key." },
+        { status: 401 }
+      );
+    }
+
+    if (err.code === "insufficient_quota") {
+      return NextResponse.json(
+        { error: "API quota exceeded. Please check your OpenAI billing." },
+        { status: 402 }
+      );
+    }
+
     return NextResponse.json(
-      { error: "Failed to analyze text" },
+      { error: "Failed to analyze text. Please try again." },
       { status: 500 }
     );
   }
