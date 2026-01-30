@@ -22,6 +22,7 @@ export default function ChatPage() {
   // Progress tracking
   const sessionStartedRef = useRef(false);
   const previousScenarioRef = useRef<string>(scenario.id);
+  const initializingRef = useRef(false);
 
   // Count corrections in messages (look for correction patterns)
   const countCorrections = useCallback((msgs: ChatMessageType[]) => {
@@ -76,12 +77,18 @@ export default function ChatPage() {
   // Start conversation when scenario changes
   useEffect(() => {
     const initConversation = async () => {
+      // Prevent double initialization (React strict mode)
+      if (initializingRef.current && previousScenarioRef.current === scenario.id) {
+        return;
+      }
+
       // Record previous session if switching scenarios
       if (previousScenarioRef.current !== scenario.id) {
         recordSession();
         sessionStartedRef.current = false;
       }
       previousScenarioRef.current = scenario.id;
+      initializingRef.current = true;
 
       setMessages([]);
       setIsLoading(true);
@@ -146,7 +153,8 @@ export default function ChatPage() {
     };
 
     initConversation();
-  }, [scenario, recordSession]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scenario.id]);
 
   // Hide scene intro after first message from user
   useEffect(() => {
