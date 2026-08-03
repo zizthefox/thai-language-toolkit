@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { EdgeTTS } from "node-edge-tts";
-import { readFile, unlink } from "fs/promises";
-import { join } from "path";
-import { tmpdir } from "os";
-import { randomUUID } from "crypto";
+import { EdgeTtsError, synthesizeSpeech } from "@/lib/edge-tts";
 
 export const maxDuration = 30;
 
@@ -16,7 +12,7 @@ const THAI_VOICES = {
 // Add natural pauses for Thai speech
 function addNaturalPauses(text: string): string {
   // Add pauses after common Thai sentence endings and punctuation
-  let processed = text
+  const processed = text
     // Add pause after polite particles (common sentence endings)
     .replace(/(ค่ะ|ครับ|คะ|นะคะ|นะครับ)(\s|$)/g, "$1 ... $2")
     // Add pause after Thai question marks and exclamation
@@ -28,10 +24,8 @@ function addNaturalPauses(text: string): string {
 }
 
 export async function POST(req: NextRequest) {
-  const tempFile = join(tmpdir(), `tts-${randomUUID()}.mp3`);
-
   try {
-    const { text, voice = "female1" } = await req.json();
+    const { text, voice = "female" } = await req.json();
 
     if (!text) {
       return NextResponse.json({ error: "Text is required" }, { status: 400 });
@@ -42,37 +36,34 @@ export async function POST(req: NextRequest) {
     // Add natural pauses for learner-friendly speech
     const processedText = addNaturalPauses(text);
 
-    // Use Edge TTS - same natural Thai voices as your Streamlit app!
-    const tts = new EdgeTTS({
+    const audioBuffer = await synthesizeSpeech({
+      text: processedText,
       voice: selectedVoice,
       lang: "th-TH",
-      rate: "-20%",   // Slower for beginners to follow along
-      pitch: "default",
+      rate: "-20%", // Slower for beginners to follow along
     });
 
-    // Generate audio to temp file
-    await tts.ttsPromise(processedText, tempFile);
-
-    // Read the file
-    const audioBuffer = await readFile(tempFile);
-
-    // Clean up temp file
-    await unlink(tempFile).catch(() => {});
-
-    return new NextResponse(audioBuffer, {
+    return new NextResponse(new Uint8Array(audioBuffer), {
       headers: {
         "Content-Type": "audio/mpeg",
         "Content-Length": audioBuffer.length.toString(),
       },
     });
   } catch (error) {
-    // Clean up temp file on error
-    await unlink(tempFile).catch(() => {});
-
     console.error("TTS Error:", error);
-    return NextResponse.json(
-      { error: "Failed to generate speech" },
-      { status: 500 }
-    );
+
+    if (error instanceof EdgeTtsError) {
+      // Surface something the UI can show instead of failing silently.
+      return NextResponse.json(
+        {
+          error: error.isHandshakeRejected
+            ? "The speech service rejected this app's client version. Pronunciation is unavailable until it's updated."
+            : "Could not generate pronunciation audio. Please try again.",
+        },
+        { status: 502 }
+      );
+    }
+
+    return NextResponse.json({ error: "Failed to generate speech" }, { status: 500 });
   }
 }
