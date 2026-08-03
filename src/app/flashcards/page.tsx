@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { recordFlashcardSession } from "@/lib/progress";
+import { useTTS } from "@/lib/useTTS";
+import { TTSErrorToast } from "@/components/TTSErrorToast";
 import {
   Volume2,
   Loader2,
@@ -66,56 +68,18 @@ export default function FlashcardsPage() {
   // Loading & TTS
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [playingText, setPlayingText] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const {
+    speak: handleSpeak,
+    playingText,
+    error: ttsError,
+    clearError: clearTtsError,
+  } = useTTS();
 
   const toggleCategory = (id: string) => {
     setSelectedCategories((prev) =>
       prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
     );
-  };
-
-  const handleSpeak = async (text: string) => {
-    if (playingText === text) return;
-
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
-
-    setPlayingText(text);
-    try {
-      const response = await fetch("/api/tts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
-      });
-
-      if (!response.ok) {
-        throw new Error("TTS failed");
-      }
-
-      const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
-
-      const audio = new Audio(audioUrl);
-      audioRef.current = audio;
-
-      audio.onended = () => {
-        setPlayingText(null);
-        URL.revokeObjectURL(audioUrl);
-      };
-
-      audio.onerror = () => {
-        setPlayingText(null);
-        URL.revokeObjectURL(audioUrl);
-      };
-
-      await audio.play();
-    } catch (error) {
-      console.error("TTS error:", error);
-      setPlayingText(null);
-    }
   };
 
   const handleStart = async () => {
@@ -570,6 +534,8 @@ export default function FlashcardsPage() {
           </div>
         )}
       </main>
+
+      <TTSErrorToast message={ttsError} onDismiss={clearTtsError} />
     </div>
   );
 }

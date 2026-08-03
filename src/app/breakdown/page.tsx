@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Volume2, Loader2, FileText, ArrowLeft } from "lucide-react";
+import { useTTS } from "@/lib/useTTS";
+import { TTSErrorToast } from "@/components/TTSErrorToast";
 
 interface WordBreakdown {
   thai: string;
@@ -57,53 +59,16 @@ export default function BreakdownPage() {
   const [result, setResult] = useState<BreakdownResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [playingText, setPlayingText] = useState<string | null>(null);
   const [gender, setGender] = useState<"male" | "female">("male");
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const handleSpeak = async (text: string) => {
-    if (playingText === text) return;
+  const {
+    speak,
+    playingText,
+    error: ttsError,
+    clearError: clearTtsError,
+  } = useTTS();
 
-    // Stop any currently playing audio
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
-
-    setPlayingText(text);
-    try {
-      const response = await fetch("/api/tts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
-      });
-
-      if (!response.ok) {
-        throw new Error("TTS failed");
-      }
-
-      const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
-
-      const audio = new Audio(audioUrl);
-      audioRef.current = audio;
-
-      audio.onended = () => {
-        setPlayingText(null);
-        URL.revokeObjectURL(audioUrl);
-      };
-
-      audio.onerror = () => {
-        setPlayingText(null);
-        URL.revokeObjectURL(audioUrl);
-      };
-
-      await audio.play();
-    } catch (error) {
-      console.error("TTS error:", error);
-      setPlayingText(null);
-    }
-  };
+  const handleSpeak = (text: string) => speak(text);
 
   const handleAnalyze = async () => {
     if (!input.trim()) return;
@@ -446,6 +411,8 @@ export default function BreakdownPage() {
           </div>
         )}
       </main>
+
+      <TTSErrorToast message={ttsError} onDismiss={clearTtsError} />
     </div>
   );
 }

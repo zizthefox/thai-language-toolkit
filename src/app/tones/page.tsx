@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { recordToneSession } from "@/lib/progress";
+import { useTTS } from "@/lib/useTTS";
+import { TTSErrorToast } from "@/components/TTSErrorToast";
 import {
   Volume2,
   Loader2,
@@ -112,8 +114,12 @@ export default function TonesPage() {
   const [speakAnswers, setSpeakAnswers] = useState<SpeakAnswer[]>([]);
 
   // Audio state
-  const [playingAudio, setPlayingAudio] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const {
+    speak: playTTS,
+    isPlaying: playingAudio,
+    error: ttsError,
+    clearError: clearTtsError,
+  } = useTTS();
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
@@ -133,46 +139,6 @@ export default function TonesPage() {
   // For speak mode, cycle through words
   const [speakTargets, setSpeakTargets] = useState<ToneWord[]>([]);
   const speakTargetWord = speakTargets[currentRoundIndex];
-
-  const playTTS = async (text: string) => {
-    if (playingAudio) return;
-
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
-
-    setPlayingAudio(true);
-    try {
-      const response = await fetch("/api/tts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
-      });
-
-      if (!response.ok) throw new Error("TTS failed");
-
-      const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
-      const audio = new Audio(audioUrl);
-      audioRef.current = audio;
-
-      audio.onended = () => {
-        setPlayingAudio(false);
-        URL.revokeObjectURL(audioUrl);
-      };
-
-      audio.onerror = () => {
-        setPlayingAudio(false);
-        URL.revokeObjectURL(audioUrl);
-      };
-
-      await audio.play();
-    } catch (error) {
-      console.error("TTS error:", error);
-      setPlayingAudio(false);
-    }
-  };
 
   const handleStart = async () => {
     setIsLoading(true);
@@ -939,6 +905,8 @@ export default function TonesPage() {
           </div>
         )}
       </main>
+
+      <TTSErrorToast message={ttsError} onDismiss={clearTtsError} />
     </div>
   );
 }

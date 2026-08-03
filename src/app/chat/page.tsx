@@ -5,19 +5,21 @@ import Image from "next/image";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
 import { ScenarioSelector } from "@/components/ScenarioSelector";
+import { TTSErrorToast } from "@/components/TTSErrorToast";
 import { SCENARIOS, Scenario, ChatMessage as ChatMessageType } from "@/lib/types";
 import { recordChatSession } from "@/lib/progress";
+import { useTTS } from "@/lib/useTTS";
 import Link from "next/link";
 
 export default function ChatPage() {
   const [scenario, setScenario] = useState<Scenario>(SCENARIOS[0]);
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [showScenarios, setShowScenarios] = useState(false);
   const [showSceneIntro, setShowSceneIntro] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const { speak, isPlaying, error: ttsError, clearError: clearTtsError } = useTTS();
 
   // Progress tracking
   const sessionStartedRef = useRef(false);
@@ -163,47 +165,10 @@ export default function ChatPage() {
     }
   }, [messages]);
 
-  const handleSpeak = async (text: string) => {
-    if (isPlaying) return;
-
-    setIsPlaying(true);
-    try {
-      const response = await fetch("/api/tts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, voice: scenario.voice }),
-      });
-
-      if (!response.ok) {
-        throw new Error("TTS failed");
-      }
-
-      const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
-
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
-
-      const audio = new Audio(audioUrl);
-      audioRef.current = audio;
-
-      audio.onended = () => {
-        setIsPlaying(false);
-        URL.revokeObjectURL(audioUrl);
-      };
-
-      audio.onerror = () => {
-        setIsPlaying(false);
-        URL.revokeObjectURL(audioUrl);
-      };
-
-      await audio.play();
-    } catch (error) {
-      console.error("TTS error:", error);
-      setIsPlaying(false);
-    }
-  };
+  const handleSpeak = useCallback(
+    (text: string) => speak(text, scenario.voice),
+    [speak, scenario.voice]
+  );
 
   const handleSend = async (message: string) => {
     // Mark session as started when user sends first message
@@ -436,6 +401,8 @@ export default function ChatPage() {
           </div>
         </footer>
       </div>
+
+      <TTSErrorToast message={ttsError} onDismiss={clearTtsError} />
     </div>
   );
 }
